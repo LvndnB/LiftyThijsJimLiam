@@ -12,9 +12,9 @@ function get_umas_function_name(code)
     elseif code == 3 then code_name = "0x03 - READ_PROJECT_INFO: Read Project Information"
     elseif code == 4 then code_name = "0x04 - READ_PLC_INFO: Get internal PLC Info"
     elseif code == 6 then code_name = "0x06 - READ_CARD_INFO: Get internal PLC SD-Card Info"
-    elseif code == 10 then code_name = "0x0A - REPEAT: Sends back data sent to the PLC (used for synchronization)"
-    elseif code == 16 then code_name = "0x10 - TAKE_PLC_RESERVATION: Assign an owner to the PLC"
-    elseif code == 17 then code_name = "0x11 - RELEASE_PLC_RESERVATION: Release the reservation of a PLC"
+    elseif code == 10 then code_name = "0x0A - REPEAT: Sends back data sent to the PLC (used for synchronization)" 
+    elseif code == 16 then code_name = "0x10 - TAKE_PLC_RESERVATION: Assign an owner to the PLC"    -- gevalideerd met "login and logout PLC.pcapng" op packet No. 14
+    elseif code == 17 then code_name = "0x11 - RELEASE_PLC_RESERVATION: Release the reservation of a PLC"    -- gevalideerd met "login and logout PLC.pcapng" op packet No. 159 
     elseif code == 18 then code_name = "0x12 - KEEP_ALIVE: Keep alive message (???)"
     elseif code == 32 then code_name = "0x20 - READ_MEMORY_BLOCK: Read a memory block of the PLC"
     elseif code == 34 then code_name = "0x22 - READ_VARIABLES: Read System bits, System Words and Strategy variables"
@@ -28,8 +28,11 @@ function get_umas_function_name(code)
     elseif code == 52 then code_name = "0x34 - DOWNLOAD_BLOCK: Download (copy from PLC to engineering PC) a strategy block"
     elseif code == 53 then code_name = "0x35 - END_STRATEGY_DOWNLOAD: Finish strategy Download (copy from PLC to engineering PC)"
     elseif code == 57 then code_name = "0x39 - READ_ETH_MASTER_DATA: Read Ethernet Master Data"
-    elseif code == 58 then code_name = "0x40 - START_PLC: Starts the PLC"
-    elseif code == 59 then code_name = "0x41 - STOP_PLC: Stops the PLC"
+    
+    -- elseif code == 58 then code_name = "0x40 - START_PLC: Starts the PLC"    -- not correct, moved to code == 64
+    -- elseif code == 59 then code_name = "0x41 - STOP_PLC: Stops the PLC"    -- not correct, moved to code == 65
+    elseif code == 64 then code_name = "0x40 - START_PLC: Starts the PLC" -- gevalideerd met "start and stop PLC.pcapng" op packet No. 26 
+    elseif code == 65 then code_name = "0x41 - STOP_PLC: Stops the PLC" -- gevalideerd met "start and stop PLC.pcapng" op packet No. 135
     elseif code == 80 then code_name = "0x50 - MONITOR_PLC: Monitors variables, Systems bits and words"
     elseif code == 88 then code_name = "0x58 - CHECK_PLC: Check PLC Connection status"
     elseif code == 112 then code_name = "0x70 - READ_IO_OBJECT: Read IO Object"
