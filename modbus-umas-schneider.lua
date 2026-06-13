@@ -21,6 +21,7 @@ function get_umas_function_name(code)
     elseif code == 35 then code_name = "0x23 - WRITE_VARIABLES: Write System bits, System Words and Strategy variables"
     elseif code == 36 then code_name = "0x24 - READ_COILS_REGISTERS: Read coils and holding registers from PLC"
     elseif code == 37 then code_name = "0x25 - WRITE_COILS_REGISTERS: Write coils and holding registers into PLC"
+    elseif code == 40 then code_name = "0x28 - UPLOAD (PLC to PC)" -- geverifieerd met "Controller to PC (upload).pcapng" op packet No. 59
     elseif code == 41 then code_name = "0x29 - SEND? DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng" op packet No. 35
     elseif code == 48 then code_name = "0x30 - INITIALIZE_UPLOAD: Initialize Strategy upload (copy from engineering PC to PLC)"
     elseif code == 49 then code_name = "0x31 - UPLOAD_BLOCK: Upload (copy from engineering PC to PLC) a strategy block to the PLC"
