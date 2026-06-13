@@ -21,7 +21,7 @@ function get_umas_function_name(code)
     elseif code == 35 then code_name = "0x23 - WRITE_VARIABLES: Write System bits, System Words and Strategy variables"
     elseif code == 36 then code_name = "0x24 - READ_COILS_REGISTERS: Read coils and holding registers from PLC"
     elseif code == 37 then code_name = "0x25 - WRITE_COILS_REGISTERS: Write coils and holding registers into PLC"
-    elseif code == 41 then code_name = "0x29 - SEND? DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng"
+    elseif code == 41 then code_name = "0x29 - SEND? DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng" op packet No. 35
     elseif code == 48 then code_name = "0x30 - INITIALIZE_UPLOAD: Initialize Strategy upload (copy from engineering PC to PLC)"
     elseif code == 49 then code_name = "0x31 - UPLOAD_BLOCK: Upload (copy from engineering PC to PLC) a strategy block to the PLC"
     elseif code == 50 then code_name = "0x32 - END_STRATEGY_UPLOAD: Finish strategy Upload (copy from engineering PC to PLC)"
@@ -36,6 +36,7 @@ function get_umas_function_name(code)
     elseif code == 65 then code_name = "0x41 - STOP_PLC: Stops the PLC" -- geverifieerd met "start and stop PLC.pcapng" op packet No. 135
     elseif code == 80 then code_name = "0x50 - MONITOR_PLC: Monitors variables, Systems bits and words"
     elseif code == 88 then code_name = "0x58 - CHECK_PLC: Check PLC Connection status"
+    elseif code == 109 then code_name = "0x6d - SEND? DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng" op packet No. 33
     elseif code == 112 then code_name = "0x70 - READ_IO_OBJECT: Read IO Object"
     elseif code == 113 then code_name = "0x71 - WRITE_IO_OBJECT: WriteIO Object"
     elseif code == 115 then code_name = "0x73 - GET_STATUS_MODULE: Get Status Module"
