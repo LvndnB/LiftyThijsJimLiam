@@ -5,7 +5,7 @@
 
 -- functions that made the concordance of the umas_code -> funtions meaning
 function get_umas_function_name(code)
-    local code_name = "Unknow"
+    local code_name = "Unknown"
     -- source: http://lirasenlared.blogspot.com/2017/08/the-unity-umas-protocol-part-i.html
     if code == 1 then code_name = "0x01 - INIT_COMM: Initialize a UMAS communication"
     elseif code == 2 then code_name = "0x02 - READ_ID: Request a PLC ID"
