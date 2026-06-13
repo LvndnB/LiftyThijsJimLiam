@@ -28,6 +28,7 @@ function get_umas_function_name(code)
     elseif code == 51 then code_name = "0x33 - INITIALIZE_UPLOAD: Initialize Strategy download (copy from PLC to engineering PC)"
     elseif code == 52 then code_name = "0x34 - DOWNLOAD_BLOCK: Download (copy from PLC to engineering PC) a strategy block"
     elseif code == 53 then code_name = "0x35 - END_STRATEGY_DOWNLOAD: Finish strategy Download (copy from PLC to engineering PC)"
+    elseif code == 54 then code_name = "0x36 - DOWNLOAD" -- geverifieerd met "PC to Controller (download).pcapng" op packet No. 42
     elseif code == 57 then code_name = "0x39 - READ_ETH_MASTER_DATA: Read Ethernet Master Data"
     
     -- elseif code == 58 then code_name = "0x40 - START_PLC: Starts the PLC"    -- not correct, moved to code == 64
