@@ -29,7 +29,7 @@ function get_umas_function_name(code)
     elseif code == 51 then code_name = "0x33 - INITIALIZE_UPLOAD: Initialize Strategy download (copy from PLC to engineering PC)"
     elseif code == 52 then code_name = "0x34 - DOWNLOAD_BLOCK: Download (copy from PLC to engineering PC) a strategy block"
     elseif code == 53 then code_name = "0x35 - END_STRATEGY_DOWNLOAD: Finish strategy Download (copy from PLC to engineering PC)"
-    elseif code == 54 then code_name = "0x36 - DOWNLOAD" -- geverifieerd met "PC to Controller (download).pcapng" op packet No. 42
+    elseif code == 54 then code_name = "0x36 - DOWNLOAD 1" -- geverifieerd met "PC to Controller (download).pcapng" op packet No. 42
     elseif code == 57 then code_name = "0x39 - READ_ETH_MASTER_DATA: Read Ethernet Master Data"
     
     -- elseif code == 58 then code_name = "0x40 - START_PLC: Starts the PLC"    -- not correct, moved to code == 64
@@ -38,9 +38,10 @@ function get_umas_function_name(code)
     elseif code == 65 then code_name = "0x41 - STOP_PLC: Stops the PLC" -- geverifieerd met "start and stop PLC.pcapng" op packet No. 135
     elseif code == 80 then code_name = "0x50 - MONITOR_PLC: Monitors variables, Systems bits and words"
     elseif code == 88 then code_name = "0x58 - CHECK_PLC: Check PLC Connection status"
-    elseif code == 109 then code_name = "0x6d - SEND? DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng" op packet No. 33
+    elseif code == 109 then code_name = "0x6d - SEND 2? DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng" op packet No. 33
     elseif code == 112 then code_name = "0x70 - READ_IO_OBJECT: Read IO Object"
     elseif code == 113 then code_name = "0x71 - WRITE_IO_OBJECT: WriteIO Object"
+    elseif code == 114 then code_name = "0x72 - UPLOAD 2 (PLC to PC)" -- geverifieerd met "Controller to PC (upload).pcapng" op packet No. 192
     elseif code == 115 then code_name = "0x73 - GET_STATUS_MODULE: Get Status Module"
     elseif code == 254 then code_name = "0xfe - Response Meaning OK"
     elseif code == 253 then code_name = "0xfd - Response Meaning Error" end
