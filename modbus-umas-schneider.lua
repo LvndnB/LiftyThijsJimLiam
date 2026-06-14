@@ -13,35 +13,35 @@ function get_umas_function_name(code)
     elseif code == 4 then code_name = "0x04 - READ_PLC_INFO: Get internal PLC Info"
     elseif code == 6 then code_name = "0x06 - READ_CARD_INFO: Get internal PLC SD-Card Info"
     elseif code == 10 then code_name = "0x0A - REPEAT: Sends back data sent to the PLC (used for synchronization)" 
-    elseif code == 16 then code_name = "0x10 - TAKE_PLC_RESERVATION: Assign an owner to the PLC"    -- geverifieerd met "login and logout PLC.pcapng" op packet No. 14
-    elseif code == 17 then code_name = "0x11 - RELEASE_PLC_RESERVATION: Release the reservation of a PLC"    -- geverifieerd met "login and logout PLC.pcapng" op packet No. 159 
+    elseif code == 16 then code_name = "0x10 - [] TAKE_PLC_RESERVATION: Assign an owner to the PLC"    -- geverifieerd met "login and logout PLC.pcapng" op packet No. 14
+    elseif code == 17 then code_name = "0x11 - [] RELEASE_PLC_RESERVATION: Release the reservation of a PLC"    -- geverifieerd met "login and logout PLC.pcapng" op packet No. 159 
     elseif code == 18 then code_name = "0x12 - KEEP_ALIVE: Keep alive message (???)"
     elseif code == 32 then code_name = "0x20 - READ_MEMORY_BLOCK: Read a memory block of the PLC"
     elseif code == 34 then code_name = "0x22 - READ_VARIABLES: Read System bits, System Words and Strategy variables"
     elseif code == 35 then code_name = "0x23 - WRITE_VARIABLES: Write System bits, System Words and Strategy variables"
     elseif code == 36 then code_name = "0x24 - READ_COILS_REGISTERS: Read coils and holding registers from PLC"
     elseif code == 37 then code_name = "0x25 - WRITE_COILS_REGISTERS: Write coils and holding registers into PLC"
-    elseif code == 40 then code_name = "0x28 - UPLOAD (PLC to PC)" -- geverifieerd met "Controller to PC (upload).pcapng" op packet No. 59
-    elseif code == 41 then code_name = "0x29 - SEND? DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng" op packet No. 35
+    elseif code == 40 then code_name = "0x28 - [] UPLOAD (PLC to PC)" -- geverifieerd met "Controller to PC (upload).pcapng" op packet No. 59
+    elseif code == 41 then code_name = "0x29 - [] SEND 1 DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng" op packet No. 35
     elseif code == 48 then code_name = "0x30 - INITIALIZE_UPLOAD: Initialize Strategy upload (copy from engineering PC to PLC)"
     elseif code == 49 then code_name = "0x31 - UPLOAD_BLOCK: Upload (copy from engineering PC to PLC) a strategy block to the PLC"
     elseif code == 50 then code_name = "0x32 - END_STRATEGY_UPLOAD: Finish strategy Upload (copy from engineering PC to PLC)"
     elseif code == 51 then code_name = "0x33 - INITIALIZE_UPLOAD: Initialize Strategy download (copy from PLC to engineering PC)"
     elseif code == 52 then code_name = "0x34 - DOWNLOAD_BLOCK: Download (copy from PLC to engineering PC) a strategy block"
     elseif code == 53 then code_name = "0x35 - END_STRATEGY_DOWNLOAD: Finish strategy Download (copy from PLC to engineering PC)"
-    elseif code == 54 then code_name = "0x36 - DOWNLOAD 1" -- geverifieerd met "PC to Controller (download).pcapng" op packet No. 42
+    elseif code == 54 then code_name = "0x36 - [] DOWNLOAD 1 (PC to PLC)" -- geverifieerd met "PC to Controller (download).pcapng" op packet No. 42
     elseif code == 57 then code_name = "0x39 - READ_ETH_MASTER_DATA: Read Ethernet Master Data"
     
     -- elseif code == 58 then code_name = "0x40 - START_PLC: Starts the PLC"    -- not correct, moved to code == 64
     -- elseif code == 59 then code_name = "0x41 - STOP_PLC: Stops the PLC"    -- not correct, moved to code == 65
-    elseif code == 64 then code_name = "0x40 - START_PLC: Starts the PLC" -- geverifieerd met "start and stop PLC.pcapng" op packet No. 26 
-    elseif code == 65 then code_name = "0x41 - STOP_PLC: Stops the PLC" -- geverifieerd met "start and stop PLC.pcapng" op packet No. 135
+    elseif code == 64 then code_name = "0x40 - [] START_PLC: Starts the PLC" -- geverifieerd met "start and stop PLC.pcapng" op packet No. 26 
+    elseif code == 65 then code_name = "0x41 - [] STOP_PLC: Stops the PLC" -- geverifieerd met "start and stop PLC.pcapng" op packet No. 135
     elseif code == 80 then code_name = "0x50 - MONITOR_PLC: Monitors variables, Systems bits and words"
     elseif code == 88 then code_name = "0x58 - CHECK_PLC: Check PLC Connection status"
-    elseif code == 109 then code_name = "0x6d - SEND 2? DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng" op packet No. 33
+    elseif code == 109 then code_name = "0x6d - [] SEND 2 DOWNLOAD (PC to PLC)" -- geverifieerd met "send (ingelogd en in programmering tab, na het bewerken van programma).pcapng" op packet No. 33
     elseif code == 112 then code_name = "0x70 - READ_IO_OBJECT: Read IO Object"
     elseif code == 113 then code_name = "0x71 - WRITE_IO_OBJECT: WriteIO Object"
-    elseif code == 114 then code_name = "0x72 - UPLOAD 2 (PLC to PC)" -- geverifieerd met "Controller to PC (upload).pcapng" op packet No. 192
+    elseif code == 114 then code_name = "0x72 - [] UPLOAD 2 (PLC to PC)" -- geverifieerd met "Controller to PC (upload).pcapng" op packet No. 192
     elseif code == 115 then code_name = "0x73 - GET_STATUS_MODULE: Get Status Module"
     elseif code == 254 then code_name = "0xfe - Response Meaning OK"
     elseif code == 253 then code_name = "0xfd - Response Meaning Error" end
