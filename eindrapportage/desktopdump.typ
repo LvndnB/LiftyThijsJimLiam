@@ -1,4 +1,4 @@
-= Desktopdump
+= Memory-dump Desktop Analyse
 Voor dit onderdeel is de analyse van de desktop memory dump door de eerdere projectgroep opnieuw uitgevoerd. Het doel is om vast te stellen of de gebruikte methode reproduceerbaar is en of de getrokken conclusies worden ondersteund door de beschikbare artefacten.
 
 == Reproductie van de analyse

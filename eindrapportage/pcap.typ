@@ -1,4 +1,4 @@
-= Analyse van de Netwerk capture
+= Netwerk capture Analyse
 
 De volgende deelvragen uit het Plan van Aanpak zijn leidend voor dit hoofdstuk:
 
@@ -103,7 +103,8 @@ Met behulp van het UMAS-filter `UMAS.Umas_Functions_Code == 41` zijn de vier mom
   [4], [115961], [21:46:48],
 )
 //SCRIPT IN BIJLAGE
-Per stream is via _Follow → TCP Stream_ de ruwe binaire data geëxporteerd als `.bin`-bestand. Elk UMAS-frame in de stream heeft de volgende structuur, zoals beschreven door Liras en la Red #cite(<lirasenlared2017>):
+Per stream is via _Follow → TCP Stream_ de ruwe binaire data geëxporteerd als `.bin`-bestand. Elk UMAS-frame in de stream heeft de volgende structuur, zoals beschreven door Liras en la Red
+#cite(<lirasenlared2017>):
 ```
 [ TCP Packet ] - [ Modbus Header ] - [5A] - [ UMAS CODE (16 bit) ] - [ UMAS PAYLOAD (Variable) ]
 ```
@@ -117,3 +118,34 @@ MCElevatorface constateerde via de PLC-memorydump dat er een ZIP-bestand in het 
 === Inhoud van de geëxtraheerde ZIP-bestanden
 _Onderzoeksvraag: Wat is de inhoud van de overgedragen bestanden en welke wijzigingen zijn daarin aangebracht?_
 
+Elk ZIP-archief bevat één bestand genaamd `entry`. Dit is een XML-bestand met de metadata van het PLC-project: variabeleninformatie, symboolnamen, commentaar op I/O-adressen en timerinstellingen.
+De vier `entry`-bestanden zijn onderling vergeleken. De resultaten zijn als volgt:
+
+*Stream1 – originele configuratie (49.417 bytes, 1.408 regels):* Het bestand bevat het ongewijzigde PLC-programma. De projectnaam is `New Project` (regel 1384). Een variabele op geheugenadres %M60 heeft op regel 171 symbool `SAME_CALL` met comment `SameFloorCall`. Een timer is ingesteld op een preset van 10 seconden (base: OneSecond).
+
+*Stream2 – gemanipuleerde versie (49.888 bytes, 1.428 regels):* Dit bestand wijkt significant af van Stream 1; de vergelijking toont 895 afwijkende regels, beginnend vanaf regel 169. De meest opvallende wijziging staat op regel 171: de variabele `SAME_CALL` is vervangen door een variabele op adresindex 35 zonder symboolnaam maar met de comment `attaxk`. Tevens zijn de timerwaarden gewijzigd: de preset is aangepast naar 5.000 milliseconden (base: OneMilliSeconds) voor meerdere timers. De projectnaam is in deze versie gewijzigd naar `SAFE Lab Mafia` (regel 1404). Dit is de enige versie waarin de comment `attaxk` aanwezig is.
+#image("/assets/image-10.png") //Stream1 vs Stream2
+
+*Stream3 – tussenversie (49.144 bytes, 1.397 regels):* Dit is het kleinste bestand van de vier. De variabele `SAME_CALL` en bijbehorende comment ontbreken. De projectnaam is ook in deze versie `SAFE Lab Mafia` (regel 1373). De timerwaarden en structuur wijken nog steeds af van Stream 1.
+
+*Stream4 – definitieve versie (49.420 bytes, 1.408 regels):* Dit bestand is vrijwel identiek aan Stream 1; de vergelijking heeft slechts 1 afwijkende regel. Op regel 1384 staat de projectnaam `SAFE Lab Mafia`, als enige overblijvende wijziging ten opzichte van het origineel. De variabele `SAME_CALL` en comment zijn hersteld en de comment `attaxk` is niet meer aanwezig.
+
+=== Vergelijking met MCElevatorface
+
+MCElevatorface ontdekte de comment `attaxk` en de naamswijziging naar `SAFE Lab Mafia` via differentiële analyse van de PLC-ExternalRAM-dumps. Zij constateerden dat het metadata-bestand in de dump was aangepast, dat er delen waren verwijderd en vervangen, en dat `attaxk` als comment was achtergebleven. Verder stelden zij vast dat de naam `SAFE Lab Mafia` als enige blijvende wijziging overbleef nadat alle overige aanpassingen teruggedraaid waren.
+
+In deze analyse zijn deze bevindingen via een onafhankelijke route geverifieerd. Niet via de memorydumps, maar rechtstreeks vanuit het netwerkverkeer. Door alle vier TCP-streams te extraheren en de `entry`-bestanden te vergelijken is vastgesteld dat dit it overeenkomt met de conclusie van MCElevatorface dat alle aanpassingen werden teruggedraaid behalve de naamswijziging.
+
+== ARP-spoofing
+_Onderzoeksvraag: Zijn er aanwijzingen voor andere aanvalstechnieken in het netwerkverkeer?_
+
+Zowel in NetworkMiner als in Wireshark zijn sporen aangetroffen van een ARP-spoofing-aanval. Een onbekend MAC-adres probeert het verkeer te onderscheppen dat bestemd is voor Employee-03 (`192.168.10.101`). MCElevatorface deed dezelfde bevinding en omschreef ARP-spoofing als een aanval waarbij de aanvaller zich via valse ARP-berichten positioneert tussen twee communicerende hosts. Er is geen direct verband aangetoond tussen de ARP-spoofing en de PLC-manipulatie door Employee-01; beide onderzoeken konden de aanvaller niet identificeren.
+
+== Conclusie
+De analyse van de PCAP-opname toont aan dat Employee-01 (`192.168.10.164`) op 29 juni 2023 vier maal een PLC-programma heeft overgedragen naar de PLC (`192.168.10.45`) via UMAS-functiecodes over Modbus/TCP. Via file carving zijn alle vier programmaversies gereconstrueerd. De versies tonen een duidelijke chronologie: het originele programma (`New Project`) werd overschreven met een gemanipuleerde versie met de comment `attaxk` en gewijzigde timerwaarden, gevolgd door tussenversies, en uiteindelijk een versie die vrijwel identiek is aan het origineel. Op de projectnaam na, die blijft gewijzigd naar `SAFE Lab Mafia`.
+
+*DV1* wordt beantwoord: de communicatie tussen `192.168.10.164` en de PLC is afwijkend. De desktop van Employee-01 heeft zonder legitieme aanleiding eigenaarschap geclaimd over de PLC (0x10), het programma gestopt (0x41) en meerdere malen data weggeschreven (0x29 / 0x6D).
+
+*DV2* wordt beantwoord: de aangetroffen UMAS-functiecodes en de geëxtraheerde programmaversies vormen directe sporen van ongeautoriseerde PLC-manipulatie via het netwerk.
+
+*DV7* wordt beantwoord: de bevindingen van MCElevatorface zijn reproduceerbaar en bevestigd via een onafhankelijke analyseroute vanuit het netwerkverkeer.
