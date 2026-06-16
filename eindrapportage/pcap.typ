@@ -103,9 +103,17 @@ Met behulp van het UMAS-filter `UMAS.Umas_Functions_Code == 41` zijn de vier mom
   [4], [115961], [21:46:48],
 )
 //SCRIPT IN BIJLAGE
-Per stream is via _Follow → TCP Stream_ de ruwe binaire data geëxporteerd als `.bin`-bestand. Vervolgens is het Python-script `extract_zips.py` uitgevoerd om de ZIP-bestanden te reconstrueren. Het script doorloopt de Modbus TCP-frames in de binaire stream, slaat per frame de Modbus en UMAS header (16 bytes) over, verzamelt de payloads en zoekt daarin de ZIP-bestandssignatuur `50 4B 03 04` (PKWARE Local File Header) als startpunt en `50 4B 05 06` (End of Central Directory) als eindpunt.
+Per stream is via _Follow → TCP Stream_ de ruwe binaire data geëxporteerd als `.bin`-bestand. Elk UMAS-frame in de stream heeft de volgende structuur, zoals beschreven door Liras en la Red #cite(<lirasenlared2017>):
+```
+[ TCP Packet ] - [ Modbus Header ] - [5A] - [ UMAS CODE (16 bit) ] - [ UMAS PAYLOAD (Variable) ]
+```
+De byte `5A` (decimaal 90) markeert het begin van het UMAS-gedeelte; de Wireshark-plugin gebruikt dit als herkenningspunt. De UMAS-payload heeft een variabele lengte en bevat naast de ZIP ook de gecompileerde applicatiecode en configuratiedata. Het extractiescript slaat per frame de eerste 16 bytes (Modbus MBAP-header inclusief UMAS-prefix) over en verzamelt uitsluitend de payloadbytes. Binnen de aaneengesloten payload zoekt het script vervolgens naar de ZIP-bestandssignatuur `50 4B 03 04` (PKWARE Local File Header) als startpunt en `50 4B 05 06` (End of Central Directory) als eindpunt. De data vóór en na de ZIP bestaat uit de binaire applicatiecode en configuratieblokken; deze zijn niet verder geanalyseerd omdat ze geen leesbare structuur hebben zonder de bijbehorende Schneider compiler of een geschikte disassembler.
 
 #image("/assets/image-8.png")
 #image("/assets/image-9.png")
 
 MCElevatorface constateerde via de PLC-memorydump dat er een ZIP-bestand in het geheugen aanwezig was en traceerde dit terug naar het netwerkverkeer bij pakket 46884. In dit onderzoek zijn alle vier de downloadstreams systematisch geëxtraheerd als volledige, werkende ZIP-archieven, waardoor een directe versievergelijking van het PLC-programma per uploadsessie mogelijk is.
+
+=== Inhoud van de geëxtraheerde ZIP-bestanden
+_Onderzoeksvraag: Wat is de inhoud van de overgedragen bestanden en welke wijzigingen zijn daarin aangebracht?_
+

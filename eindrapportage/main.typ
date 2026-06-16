@@ -24,3 +24,5 @@
 #include "desktopdump.typ"
 
 #include "conclusie.typ"
+
+#bibliography("bronnen.bib", style: "apa")
