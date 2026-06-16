@@ -16,6 +16,7 @@
 
 #include "inleiding.typ"
 
+#include "experimenten.typ"
 #include "pcap.typ"
 #include "memorydump_plc.typ"
 #include "desktopdump.typ"
