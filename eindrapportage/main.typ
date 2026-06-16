@@ -2,6 +2,10 @@
   title: [Validatie Lifty]
 )
 
+#set text(
+  lang: "nl"
+)
+
 #title()
 
 #pagebreak()
