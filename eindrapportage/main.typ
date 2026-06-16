@@ -16,6 +16,8 @@
 
 #include "inleiding.typ"
 
+#include "hypothesescenario.typ"
+#include "onderzoeksvragen.typ"
 #include "experimenten.typ"
 #include "pcap.typ"
 #include "memorydump_plc.typ"
