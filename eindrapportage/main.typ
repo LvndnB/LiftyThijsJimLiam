@@ -1,18 +1,29 @@
 #set document(
-  title: [Validatie Lifty]
+  title: [Lifty - Eindrapportage],
+  author: "Liam van den Berg, Thijs van der Zwan, Jim van Dijk"
 )
 
 #set text(
   lang: "nl"
 )
 
+
 #title()
 
 #pagebreak()
 
+#set page(header: [
+  Lifty - Eindrapportage
+])
+
 #outline()
 
 #pagebreak()
+#set page(
+  numbering: "1",
+  number-align: right
+)
+#counter(page).update(1)
 
 #include "inleiding.typ"
 #pagebreak()
