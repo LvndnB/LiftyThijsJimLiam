@@ -1,8 +1,8 @@
 = Memory-dump Desktop Analyse
 Voor dit onderdeel is de analyse van de desktop memory dump door de eerdere projectgroep opnieuw uitgevoerd. Het doel is om vast te stellen of de gebruikte methode reproduceerbaar is en of de getrokken conclusies worden ondersteund door de beschikbare artefacten.
 
-== Reproductie van de analyse
-=== Validatie van image-informatie
+== Analyse
+=== Image-informatie
 In het onderzoeksverslag wordt vermeld dat het een windows desktop betreft, maar dat de versie niet duidelijk is.
 Door middel van de `windows.info` plugin van Volatility3 kon aanvullende systeeminformatie worden verkregen, zie @system_info.
 Hieruit blijkt dat het systeem Windows 10 betreft met buildnummer 19041. Deze informatie was aanwezig in de memory dump, maar is niet opgenomen in het oorspronkelijke onderzoeksverslag.
@@ -20,7 +20,7 @@ NtMinorVersion  0
 caption: [Systeeminformatie, geextract uit memorydump met Volatility3.],
 )<system_info>
 
-=== Validatie procesanalyse
+=== Procesanalyse
 === Extra controle met psscan
 === Validatie netwerkverbindingen
 Tijdens de reproductie van de netscan-analyse werden meer externe IP-adressen aangetroffen dan in het oorspronkelijke verslag zijn opgenomen. Validatie met WHOIS/ASN-attributie toont aan dat deze adressen behoren tot Microsoft Azure, Microsoft 365 en Google-infrastructuur. Er zijn geen aanwijzingen gevonden dat deze verbindingen direct gerelateerd zijn aan de onderzochte PLC-aanval. De aanvullende IP-adressen wijzigen de conclusies van het oorspronkelijke onderzoek daarom niet.
@@ -42,8 +42,8 @@ Tijdens de reproductie van de netscan-analyse werden meer externe IP-adressen aa
   ),
   caption: [Externe IP-adressen aangetroffen tijdens netscan-analyse en bijbehorende organisaties.],
 )
-=== Registry-claim valideren
-=== Filescan valideren
-=== Strings-validatie
+=== Registry
+=== Filescan
+=== Strings
 == Bevindingen van de validatie
 
