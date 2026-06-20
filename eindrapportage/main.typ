@@ -43,9 +43,10 @@
 #pagebreak()
 #include "conclusie.typ"
 #pagebreak()
-#set heading(numbering: "A.")
+#counter(heading).update(0)
+#set heading(numbering: "A.", supplement: [Bijlage])
 
-= Bijlage: Wireshark Plugin <appendixA>
+= Wireshark Plugin <appendixA>
 Hieronder volgt de aangepaste plugin gebaseerd op de plugin van #cite(<bierocorridor_umasplugin>):
 
 
@@ -185,7 +186,10 @@ local modbus = DissectorTable.get("tcp.port")
 modbus:add(502, modbus1_protocol)
 ```
 #pagebreak()
-= Bijlage: script <appendixB>
+= Script <appendixB>
+Python script: `extract_zips.py`:
+
+
 ```
 import struct, sys
 
@@ -225,7 +229,7 @@ print(f"Klaar: extracted.zip ({end - start} bytes)")
 
 ```
 #pagebreak()
-= Bijlage: entry's uit de PCAP-analyse <appendixC>
+= Entry's uit de PCAP-analyse <appendixC>
 
 #pagebreak()
 #bibliography("bronnen.bib", style:"american-political-science-association")
