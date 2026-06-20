@@ -231,5 +231,36 @@ print(f"Klaar: extracted.zip ({end - start} bytes)")
 #pagebreak()
 = Entry's uit de PCAP-analyse <appendixC>
 
+Tijdens de PCAP-analyse zijn de vier uploadsessies (streams) van Employee-01 naar de PLC gereconstrueerd. Per stream is met het script uit @appendixB het ZIP-archief uit de TCP-datastroom gecarved; elk archief bevat één `entry`-bestand met de XML-metadata van het PLC-project op dat moment (zie het hoofdstuk over de PCAP-analyse).
+ 
+Deze vier `entry`-bestanden zijn in het portfolio aanwezig in de map `TCPstreamZIPextractie`, met de volgende structuur:
+ 
+```
+TCPstreamZIPextractie/
+├── extract_zips.py
+├── Stream1/
+│   ├── stream1.bin
+│   ├── extracted.zip
+│   └── extracted/
+│       └── entry
+├── Stream2/
+│   ├── stream2.bin
+│   ├── extracted.zip
+│   └── extracted/
+│       └── entry
+├── Stream3/
+│   ├── stream3.bin
+│   ├── extracted.zip
+│   └── extracted/
+│       └── entry
+└── Stream4/
+    ├── stream4.bin
+    ├── extracted.zip
+    └── extracted/
+        └── entry
+```
+ 
+Elke `StreamX`-map komt overeen met één uploadmoment: `streamX.bin` is de ruwe TCP-stream, `extracted.zip` het daaruit gecarvede ZIP-archief en `extracted/entry` het uitgepakte metadatabestand dat voor de versievergelijking tussen de vier uploads is gebruikt.
+
 #pagebreak()
 #bibliography("bronnen.bib", style:"american-political-science-association")
