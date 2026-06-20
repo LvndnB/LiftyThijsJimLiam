@@ -48,4 +48,4 @@
 = Bijlage: entry's uit de PCAP-analyse
 
 #pagebreak()
-#bibliography("bronnen.bib", style: "apa")
+#bibliography("bronnen.bib", style:"american-political-science-association")

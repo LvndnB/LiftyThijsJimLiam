@@ -12,32 +12,32 @@ Om de memory dumps te analyseren is eerst het eerst van belang om te weten welke
 
 == Magic numbers
 
-Elk bestandstype en protocol bevat een 'magic number'. Elk bestandstype heeft zijn eigen unieke magic number en is terug te vinden in de eerste aantal bytes van een bestand. Programma's kunnen aan de hand van deze magic numbers bestanden herkennen en categoriseren.#footnote[Purohit, 2026]
+Elk bestandstype en protocol bevat een 'magic number'. Elk bestandstype heeft zijn eigen unieke magic number en is terug te vinden in de eerste aantal bytes van een bestand. Programma's kunnen aan de hand van deze magic numbers bestanden herkennen en categoriseren.#footnote[@purohit2026magicnumbers]
 
 Met behulp van deze magic numbers kan bij een voorheen onbekend bestand worden vastgesteld welk bestandstype van toepassing is. Wanneer dit bekend is, kan vervolgens gerichter naar de inhoud van het bestand gekeken worden, om aanwijzingen te vinden.
 
-Om deze magic numbers in de verschillende memory dumps te vinden is het programma `Binwalk` gebruikt in een Linux-terminal. Binwalk bevat een uitgebreide bibliotheek aan magic numbers en scant de dump-bestanden ernaar. Op deze manier kunnen mogelijk embedded bestanden uit de dumps worden gehaald.#footnote[devttys0, 2024]
+Om deze magic numbers in de verschillende memory dumps te vinden is het programma `Binwalk` gebruikt in een Linux-terminal. Binwalk bevat een uitgebreide bibliotheek aan magic numbers en scant de dump-bestanden ernaar. Op deze manier kunnen mogelijk embedded bestanden uit de dumps worden gehaald.#footnote[@devttys02024binwalk]
 
 In onderstaande afbeelding is het resultaat van Binwalk te zien nadat het programma de bestanden `ExtRAM_20230629143509`.bin' en `OnChipRAM_20230629143506.bin` heeft geanalyseerd op embedded bestanden. Het programma trof bij het ExtRAM bestand een embedded ziparchief aan. Het OnChipRAM bestand kwam zonder resultaat terug.
 
 #figure(
   image("/assets/image-12.png"),
   caption: [Resultaat Binwalk scan op eerste ExtRAM en OnChipRAM bestanden.],
-)
+)<afbeelding1>
 
-Na de vondst van het ziparchief is dezelfde scan uitgevoerd op de volgende twee dumps. In figuur 2 is te zien dat op dezelfde geheugenadressen wederom een ziparchief is aangetroffen.
+Na de vondst van het ziparchief is dezelfde scan uitgevoerd op de volgende twee dumps. In @afbeelding2 is te zien dat op dezelfde geheugenadressen wederom een ziparchief is aangetroffen.
 
 #figure(
   image("/assets/image-13.png"),
   caption: [Resultaat Binwalk scan op tweede ExtRAM en OnChipRAM bestanden],
-)
+)<afbeelding2>
 
-Wegens het gebrek aan aanwijzingen in de OnChipRAM dumps zijn vervolgens enkel de overige ExtRAM bestanden op chronologische volgorde geanalyseerd. In onderstaande afbeelding zijn de resultaten te zien, welke tevens zijn verwerkt in tabel 1.
+Wegens het gebrek aan aanwijzingen in de OnChipRAM dumps zijn vervolgens enkel de overige ExtRAM bestanden op chronologische volgorde geanalyseerd. In onderstaande afbeelding zijn de resultaten te zien, welke tevens zijn verwerkt in @tabel1.
 
 #figure(
   image("/assets/image-14.png", width: 90%),
   caption: [Resultaten Binwalk scans overige ExtRAM bestanden.],
-)
+)<afbeelding3>
 
 
 #figure(
@@ -54,11 +54,11 @@ Wegens het gebrek aan aanwijzingen in de OnChipRAM dumps zijn vervolgens enkel d
   [7], [`ExtRAM_20230629160538`], [16:05:38], [0xD00B], [0xE8B8], [6317 bytes],
 ),
   caption: [Overzicht van gevonden ziparchieven per ExtRAM dump.],
-)
+)<tabel1>
 
 Op basis van deze gegevens blijkt dat de startwaarde van het ziparchief in alle dumps hetzelfde is. Dit geeft aan dat de header van elke dump een vaste structuur heeft en niet is aangetast. Verder is te zien dat de eindoffset wel verandert. Zo valt op dat in dump 3, 5 en 6 de eindwaardes zijn veranderd ten opzichte van de vorige dump. Ook opmerkelijk is dat de totale grootte van de ziparchieven drie keer verandert. Dit betekent dus dat er in totaal 4 unieke versies van het ziparchief zijn.
 
-In het onderzoek _Zubair et al. (2022)_ wordt beschreven dat er magic numbers in het external RAM van Schneider M221 PLC zijn aangetroffen die corresponderen met een ziparchief. Dit archief is geëxtraheerd en gedecomprimeerd naar een `XML-bestand`. De onderzoekers konden vaststellen dat dit `XML-bestand` de semantiek van de data-objecten beschrijft, welke in de besturingslogica worden gebruikt. Hiermee kan vervolgens de ladder-logica van het PLC-programma deels worden vastgesteld.
+In het onderzoek @zubair2022pem wordt beschreven dat er magic numbers in het external RAM van Schneider M221 PLC zijn aangetroffen die corresponderen met een ziparchief. Dit archief is geëxtraheerd en gedecomprimeerd naar een `XML-bestand`. De onderzoekers konden vaststellen dat dit `XML-bestand` de semantiek van de data-objecten beschrijft, welke in de besturingslogica worden gebruikt. Hiermee kan vervolgens de ladder-logica van het PLC-programma deels worden vastgesteld.
 
 Als de verandering van de totale grootte van de ziparchieven wordt gecombineerd met de informatie uit het onderzoek kan geconstateerd worden dat de control logic van de PLC mogelijk is gewijzigd.
 #pagebreak()
@@ -76,30 +76,30 @@ Om de eerdere constatering te valideren is het noodzakelijk dat de inhoud van he
   ```,
 )
 
-_N.B. Het 'skip' argument zorgt ervoor dat dd pas data kopieert vanaf de waarde 53259. Dit is de startwaarde van het ziparchief (zie figuur 1)._
+_N.B. Het 'skip' argument zorgt ervoor dat dd pas data kopieert vanaf de waarde 53259. Dit is de startwaarde van het ziparchief (zie @afbeelding1)._
 
 #figure(
   image("/assets/image-15.png"),
   caption: [Output dd commando.],
-)
+)<afbeelding4>
 In het ziparchief bevindt zich een `entry`-bestand (fig. 5).
 
 #figure(
   image("/assets/image-16.png"),
   caption: [Inhoud geëxtraheerd ziparchief ExtRAM dump 1.],
-)
+)<afbeelding5>
 
-In het entry-bestand is metadata van het PLC-programma te zien (zie figuur 6). Met de namen van gebruikte I/O adressen kan worden vastgesteld welke fysieke sensoren en actuatoren zijn aangesloten. Ook is terug te zien welke interne toestandsvariabelen en counters worden gebruikt.
+In het entry-bestand is metadata van het PLC-programma te zien (zie @afbeelding6). Met de namen van gebruikte I/O adressen kan worden vastgesteld welke fysieke sensoren en actuatoren zijn aangesloten. Ook is terug te zien welke interne toestandsvariabelen en counters worden gebruikt.
 
 #figure(
-  image("/assets/image-17.png", width: 80%),
+  image("/assets/image-17.png", width: 75%),
   caption: [Deel van de inhoud entry bestand ExtRAM dump 1.],
-)
+)<afbeelding6>
 #pagebreak()
 
 == Vergelijking entry-bestanden
 
-Nu er belangrijke data omtrent het functioneren van de PLC is aangetroffen in de memory dump en bekend is dat de inhoud van dit bestand meermaals is veranderd, zijn alle 7 entry-bestanden uit de ExtRAM-dumps geëxtraheerd en is de inhoud hiervan met elkaar vergeleken. Er zijn 4 unieke versies van het entry-bestand gevonden (zie onderstaande tabel).
+Nu er belangrijke data omtrent het functioneren van de PLC is aangetroffen in de memory dump en bekend is dat de inhoud van dit bestand meermaals is veranderd, zijn alle 7 entry-bestanden uit de ExtRAM-dumps geëxtraheerd en is de inhoud hiervan met elkaar vergeleken. Er zijn 4 unieke versies van het entry-bestand gevonden (zie @tabel2).
 
 #figure(
   table(
@@ -112,14 +112,15 @@ Nu er belangrijke data omtrent het functioneren van de PLC is aangetroffen in de
   [D], [entry6.xml / entry7.xml], [15:50 / 16:05], [0xE8B8], [6317], [Meer sporen uitwissen. Uiteindelijk achtergebleven programma],
 ),
   caption: [Overzicht van unieke versies van het entry-bestand en bijbehorende status.],
-)
+)<tabel2>
 
 _N.B. In het kader van leesbaarheid is een chronologische nummering toegevoegd aan de entry-files (1-7)._
 
 In versie A zijn geen verdachte stukken code aangetroffen, dit wordt daarom gezien als het originele lift-programma dat op de PLC draaide, voordat het incident plaatsvond.
 
 De andere versies bevatten wel aanpassingen ten opzichte van versie A, welke in de volgende sub-paragrafen zullen worden toegelicht.
-=
+#linebreak()
+
 === Wijzigingen versie B
 
 ==== SAME_CALL → attaxk
@@ -156,7 +157,7 @@ table(
 
 ==== Toegevoegde timers
 
-Timer2 en timer3 zijn toegevoegd en hebben een waarde toegewezen gekregen (zie tabel 5). Net als timer0 is het niet bekend waar en waarvoor deze timers gebruikt zijn, echter kan dit grote functionele gevolgen hebben.
+Timer2 en timer3 zijn toegevoegd en hebben een waarde toegewezen gekregen (zie @tabel5). Net als timer0 is het niet bekend waar en waarvoor deze timers gebruikt zijn, echter kan dit grote functionele gevolgen hebben.
 
 #figure(
  table(
@@ -166,11 +167,11 @@ Timer2 en timer3 zijn toegevoegd en hebben een waarde toegewezen gekregen (zie t
   [`entry3.xml`], [184-185, 188-190], [`<Index>2</Index>` `<Preset>30</Preset>` `<Index>3</Index>` `<Preset>7</Preset>` `<Base>OneSecond</Base>`],
 ),
   caption: [Toevoeging van timer2 en timer3.],
-)
+)<tabel5>
 
 ==== Rungs toegevoegd
 
-In de verschillende Program Organization Unit's (POU) worden inputs, outputs en functies gecombineerd om code uit te kunnen voeren op een PLC.#footnote[Schneider Electronic India, 2013] Dit zijn dus cruciale onderdelen van de metadata. Verder zijn POU's opgebouwd uit 'Rungs', horizontale regels met links de inputs en rechts de outputs (acties). Deze regels worden van boven naar beneden uitgevoerd, zodat deze manier van programmeren 'Ladder Diagram' wordt genoemd.
+In de verschillende Program Organization Unit's (POU) worden inputs, outputs en functies gecombineerd om code uit te kunnen voeren op een PLC.#footnote[@schneider2013pou] Dit zijn dus cruciale onderdelen van de metadata. Verder zijn POU's opgebouwd uit 'Rungs', horizontale regels met links de inputs en rechts de outputs (acties). Deze regels worden van boven naar beneden uitgevoerd, zodat deze manier van programmeren 'Ladder Diagram' wordt genoemd.
 
 In de entry-bestanden zijn de structuur en namen van de POU's terug te vinden onder de sectie `<Pous>`. Daarnaast zijn de verschillende programmablokken terug te zien, elk beginnend met de tag `<PouMetadata>`. De namen van deze blokken en de verschillende rungs zijn ook gedefinieerd. Ondanks het ontbreken van de daadwerkelijke logica, kan alsnog een redelijk beeld worden geschetst van de programmastructuur.
 
@@ -261,7 +262,7 @@ In deze laatste versie is een extra poging gedaan om meer wijzigingen (uit versi
 
 ==== Terugplaatsing 'SAME_CALL' memory-bit
 
-In versie B werd het memory-bit op index 35 met symbool 'SAME_CALL' gewijzigd naar index 60 en bevatte dit nieuwe memory-bit enkel de comment 'attaxk'. In versie C is dit memory-bit verwijderd, maar zijn de aanvallers vergeten om het oorspronkelijke index 60 bit terug te plaatsen. In versie D is dit alsnog gedaan (zie tabel 11).
+In versie B werd het memory-bit op index 35 met symbool 'SAME_CALL' gewijzigd naar index 60 en bevatte dit nieuwe memory-bit enkel de comment 'attaxk'. In versie C is dit memory-bit verwijderd, maar zijn de aanvallers vergeten om het oorspronkelijke index 60 bit terug te plaatsen. In versie D is dit alsnog gedaan (zie @tabel11).
 
 #figure(
   table(
@@ -272,13 +273,13 @@ In versie B werd het memory-bit op index 35 met symbool 'SAME_CALL' gewijzigd na
   [*Na*], [`entry6.xml`], [169-173], [`<Index>60</Index>`, `<Symbol>SAME_CALL</Symbol>`, `<Comment>SameFloorCall</Comment>`],
 ),
   caption: [Terugplaatsing van het SAME_CALL memory bit.],
-)
+)<tabel11>
 
 Als het achtergebleven programma uit versie D wordt vergeleken met het oorspronkelijke programma, zijn alle sporen van de aanval verwijderd. Het enige dat de aanvallers zijn vergeten terug te draaien, is de naam van het project. Dit is nog altijd 'SAFE Lab Mafia'.
 
 ==== Duur timer0 terug veranderd
 
-De oorspronkelijke duur van timer0 was 10 seconden. In versie B werd dit aangepast naar 5 seconden. Hoewel dit in versie C niet gecorrigeerd werd, is dit nu wel het geval (zie tabel 12).
+De oorspronkelijke duur van timer0 was 10 seconden. In versie B werd dit aangepast naar 5 seconden. Hoewel dit in versie C niet gecorrigeerd werd, is dit nu wel het geval (zie @tabel12).
 
 #figure(
   table(
@@ -289,16 +290,16 @@ De oorspronkelijke duur van timer0 was 10 seconden. In versie B werd dit aangepa
   [*Na*], [`entry6.xml`], [176-177], [`<Preset>10</Preset>`, `<Base>OneSecond</Base>`],
 ),
   caption: [Duur van timer0 terug veranderd naar originele duur.],
-)
+)<tabel12>
 
 #pagebreak()
 == Analyse inhoud OnChipRAM
 
-Om mogelijk relevante data uit de OnChipRAM-bestanden te halen, zijn de eerste twee dumps in hex-editor `HxD` geladen (zie figuur 7). Dit programma vertaalt de ruwe bytes naar ASCII-karakters. Hierdoor kan bekeken worden of er strings tekst aanwezig zijn die informatie bevatten.
+Om mogelijk relevante data uit de OnChipRAM-bestanden te halen, zijn de eerste twee dumps in hex-editor `HxD` geladen (zie @afbeelding7). Dit programma vertaalt de ruwe bytes naar ASCII-karakters. Hierdoor kan bekeken worden of er strings tekst aanwezig zijn die informatie bevatten.
 
 #figure(
   image("/assets/image-18.png"),
-)
+)<afbeelding7>
 #align(left)[_Figuur 7: Deel inhoud tweede OnChipRAM bestand in HxD._]
 
 Nadat hier meerdere strings in te zien waren - bijvoorbeeld `DESKTOP-RSRBUGJ`, `New Project`, `192.168.10.45` - is het Linux commando `strings` gebruikt om alle strings uit een dump te detecteren en weer te geven:
@@ -314,27 +315,28 @@ Nadat hier meerdere strings in te zien waren - bijvoorbeeld `DESKTOP-RSRBUGJ`, `
 
 Dit resulteerde in een lijst van strings, waarvan een groot deel nuttige informatie bevatte, zoals de naam van het project, het IP- en MAC-adres, de firmware-versie en het modelnummer van de PLC.
 
-Vanaf dump 2 is het aantal gevonden strings aanzienlijk groter, en zijn ook domeinen en Windows PC-gebruikersnamen terug te lezen (zie figuur 8). Dit kan betekenen dat de PLC door iemand is benaderd.
+Vanaf dump 2 is het aantal gevonden strings aanzienlijk groter, en zijn ook domeinen en Windows PC-gebruikersnamen terug te lezen (zie @afbeelding8 en @afbeelding9). Dit kan betekenen dat de PLC door iemand is benaderd.
 
-In het strings-resultaat van dump 3 valt in het bijzonder op dat de projectnaam van `New Project` is veranderd naar `SAFE Lab Mafia` (zie figuur 9). Dit komt overeen met de eerdere bevindingen uit de ExtRAM-dumps. De nieuw gevonden domeinen en Windows-gebruikers en de aanwijzing dat de PLC via het netwerk is benaderd en er vervolgens wijzigingen zijn aangebracht, kan worden gebruikt bij het onderzoeken van de netwerkcapture.
+In het strings-resultaat van dump 3 valt in het bijzonder op dat de projectnaam van `New Project` is veranderd naar `SAFE Lab Mafia` (zie @afbeelding10). Dit komt overeen met de eerdere bevindingen uit de ExtRAM-dumps. De nieuw gevonden domeinen en Windows-gebruikers en de aanwijzing dat de PLC via het netwerk is benaderd en er vervolgens wijzigingen zijn aangebracht, kan worden gebruikt bij het onderzoeken van de netwerkcapture.
 
 #grid(
   columns: 2,
   gutter: 10pt,
-  figure(
+  [#figure(
     image("/assets/image-19.png", width: 89%),
     caption: [Deel output `strings` command voor dump 2],
-  ),
-  figure(
+  ) <afbeelding8>],
+  [#figure(
     image("/assets/image-20.png"),
     caption: [Meer output.],
-  ),
+  ) <afbeelding9>],
 )
-=
+#linebreak()
+
 #figure(
   image("/assets/image-21.png"),
   caption: [Aanwezigheid `SAFE Lab Mafia` in dump 3.],
-)
+)<afbeelding10>
 
 #pagebreak()
 == Conclusie
