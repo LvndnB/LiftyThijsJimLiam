@@ -25,20 +25,15 @@ Als bewijsstuk is een netwerk dump aangeleverd: het bestand `142728_162728.pcapn
   image("/assets/image-3.png")
 )
 
-Voor de analyse zijn twee tools ingezet: Wireshark en NetworkMiner. Wireshark is gebruikt als primaire tool voor het inspecteren van individuele pakketten, het toepassen van displayfilters en het volgen van TCP-streams. NetworkMiner is ingezet voor een eerste screening op afwijkingen in het netwerk. Daarnaast is een zelf geschreven Python-script (`extract_zips.py`) gebruikt om ZIP-archieven te extraheren vanuit de TCP-streams.
+Voor de analyse zijn twee tools ingezet: Wireshark en NetworkMiner. Wireshark is gebruikt als primaire tool voor het inspecteren van individuele pakketten, het toepassen van displayfilters en het volgen van TCP-streams. NetworkMiner is ingezet voor een eerste screening op afwijkingen in het netwerk. Daarnaast is een zelf geschreven Python-script (#ref(<appendixB>) `extract_zips.py`) gebruikt om ZIP-archieven te extraheren vanuit de TCP-streams.
 
-// referentie!!!
-MCElevatorface voerde de analyse primair uit in Wireshark en gebruikte daarnaast een script van een groepslid om tijdstempeldata te verwerken in Excel. In dit onderzoek is voor het decoderen van Modbus/UMAS-verkeer een aangepaste Wireshark-plugin gebruikt, uitleg hierover is te vinden in..... De plugin labelt UMAS-verkeer op TCP-poort 502 en maakt gefilterde analyse van specifieke UMAS-functies mogelijk. NetworkMiner is als aanvullende stap ingezet voor de eerste detectie van afwijkingen, voordat de diepere Wireshark-analyse plaatsvond.
+
+MCElevatorface voerde de analyse primair uit in Wireshark en gebruikte daarnaast een script van een groepslid om tijdstempeldata te verwerken in Excel. In dit onderzoek is voor het decoderen van Modbus/UMAS-verkeer een aangepaste Wireshark-plugin gebruikt, uitleg hierover is te vinden in #ref(<plugin>). De plugin labelt UMAS-verkeer op TCP-poort 502 en maakt gefilterde analyse van specifieke UMAS-functies mogelijk. NetworkMiner is als aanvullende stap ingezet voor de eerste detectie van afwijkingen, voordat de diepere Wireshark-analyse plaatsvond.
 
 #pagebreak()
 == Netwerktopologie en identificatie van betrokken hosts
 _Onderzoeksvraag: Welke hosts communiceren met de PLC en welke verbinding is afwijkend?_
 
-
-
-== Netwerktopologie en identificatie van betrokken hosts
-
-_Subonderzoeksvraag: Welke hosts communiceren met de PLC en welke verbinding is afwijkend?_
 
 === Identificatie via NetworkMiner
 
@@ -89,7 +84,7 @@ Op basis van de gefilterde pakketlijst en de UMAS Wireshark-plugin zijn de volge
 *Vergelijking met MCElevatorface:* MCElevatorface identificeerde dezelfde reeks handelingen. In hun rapport worden de functiecodes uitgedrukt in hexadecimaal zonder 0x-prefix (bijv. "functie code 10" voor wat hier 0x10 = decimaal 16 is, en "functie code 41" voor wat hier 0x41 = decimaal 65 is). Dit kan verwarring opleveren bij directe vergelijking. Wat MCElevatorface "functie code 29 (WRITE\_AND\_READ\_REGISTER)" noemt, correspondeert met 0x29 = decimaal 41, hier gelabeld als SEND 1 DOWNLOAD. De functienaam verschilt maar de functie is gelijk: data schrijven naar de PLC.
 
 == File carving: extractie van ZIP-archieven uit TCP-streams
-_Subonderzoeksvraag: Welke gegevens zijn via het netwerk naar de PLC overgedragen en hoe zijn deze te reconstrueren?_
+_Onderzoeksvraag: Welke gegevens zijn via het netwerk naar de PLC overgedragen en hoe zijn deze te reconstrueren?_
 
 === Identificatie van de downloadstreams
 Met behulp van het UMAS-filter `UMAS.Umas_Functions_Code == 41` zijn de vier momenten geïdentificeerd waarop Employee-01 data naar de PLC stuurt. In dit filter is 41 de *decimale* waarde, overeenkomend met 0x29 (SEND 1 DOWNLOAD). De bijbehorende TCP-streams starten bij de volgende pakketnummers:
