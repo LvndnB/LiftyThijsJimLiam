@@ -25,10 +25,10 @@ Als bewijsstuk is een netwerk dump aangeleverd: het bestand `142728_162728.pcapn
   image("/assets/image-3.png")
 )
 
-Voor de analyse zijn twee tools ingezet: Wireshark en NetworkMiner. Wireshark is gebruikt als primaire tool voor het inspecteren van individuele pakketten, het toepassen van displayfilters en het volgen van TCP-streams. NetworkMiner is ingezet voor een eerste screening op afwijkingen in het netwerk. Daarnaast is een zelf geschreven Python-script (`extract_zips.py`) gebruikt om ZIP-archieven te extraheren vanuit de TCP-streams.
+Voor de analyse zijn twee tools ingezet: Wireshark en NetworkMiner. Wireshark is gebruikt als primaire tool voor het inspecteren van individuele pakketten, het toepassen van displayfilters en het volgen van TCP-streams. NetworkMiner is ingezet voor een eerste screening op afwijkingen in het netwerk. Daarnaast is een zelf geschreven Python-script (#ref(<appendixB>) `extract_zips.py`) gebruikt om ZIP-archieven te extraheren vanuit de TCP-streams.
 
-// referentie!!!
-MCElevatorface voerde de analyse primair uit in Wireshark en gebruikte daarnaast een script van een groepslid om tijdstempeldata te verwerken in Excel. In dit onderzoek is voor het decoderen van Modbus/UMAS-verkeer een aangepaste Wireshark-plugin gebruikt, uitleg hierover is te vinden in..... De plugin labelt UMAS-verkeer op TCP-poort 502 en maakt gefilterde analyse van specifieke UMAS-functies mogelijk. NetworkMiner is als aanvullende stap ingezet voor de eerste detectie van afwijkingen, voordat de diepere Wireshark-analyse plaatsvond.
+
+MCElevatorface voerde de analyse primair uit in Wireshark en gebruikte daarnaast een script van een groepslid om tijdstempeldata te verwerken in Excel. In dit onderzoek is voor het decoderen van Modbus/UMAS-verkeer een aangepaste Wireshark-plugin gebruikt, uitleg hierover is te vinden in #ref(<plugin>). De plugin labelt UMAS-verkeer op TCP-poort 502 en maakt gefilterde analyse van specifieke UMAS-functies mogelijk. NetworkMiner is als aanvullende stap ingezet voor de eerste detectie van afwijkingen, voordat de diepere Wireshark-analyse plaatsvond.
 
 #pagebreak()
 == Netwerktopologie en identificatie van betrokken hosts
