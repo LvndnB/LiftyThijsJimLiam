@@ -35,11 +35,6 @@ MCElevatorface voerde de analyse primair uit in Wireshark en gebruikte daarnaast
 _Onderzoeksvraag: Welke hosts communiceren met de PLC en welke verbinding is afwijkend?_
 
 
-
-== Netwerktopologie en identificatie van betrokken hosts
-
-_Subonderzoeksvraag: Welke hosts communiceren met de PLC en welke verbinding is afwijkend?_
-
 === Identificatie via NetworkMiner
 
 Het pcap-bestand is ingeladen in NetworkMiner 1.6.1. Via het tabblad _Hosts_, gesorteerd op verzonden pakketten (aflopend), zijn 58 hosts geïdentificeerd op het netwerk. De bovenaan verschijnende hosts hebben de meeste activiteit vertoond. Uit dit overzicht zijn de volgende voor dit onderzoek relevante hosts vastgesteld:
@@ -89,7 +84,7 @@ Op basis van de gefilterde pakketlijst en de UMAS Wireshark-plugin zijn de volge
 *Vergelijking met MCElevatorface:* MCElevatorface identificeerde dezelfde reeks handelingen. In hun rapport worden de functiecodes uitgedrukt in hexadecimaal zonder 0x-prefix (bijv. "functie code 10" voor wat hier 0x10 = decimaal 16 is, en "functie code 41" voor wat hier 0x41 = decimaal 65 is). Dit kan verwarring opleveren bij directe vergelijking. Wat MCElevatorface "functie code 29 (WRITE\_AND\_READ\_REGISTER)" noemt, correspondeert met 0x29 = decimaal 41, hier gelabeld als SEND 1 DOWNLOAD. De functienaam verschilt maar de functie is gelijk: data schrijven naar de PLC.
 
 == File carving: extractie van ZIP-archieven uit TCP-streams
-_Subonderzoeksvraag: Welke gegevens zijn via het netwerk naar de PLC overgedragen en hoe zijn deze te reconstrueren?_
+_Onderzoeksvraag: Welke gegevens zijn via het netwerk naar de PLC overgedragen en hoe zijn deze te reconstrueren?_
 
 === Identificatie van de downloadstreams
 Met behulp van het UMAS-filter `UMAS.Umas_Functions_Code == 41` zijn de vier momenten geïdentificeerd waarop Employee-01 data naar de PLC stuurt. In dit filter is 41 de *decimale* waarde, overeenkomend met 0x29 (SEND 1 DOWNLOAD). De bijbehorende TCP-streams starten bij de volgende pakketnummers:

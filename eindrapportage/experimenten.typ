@@ -26,3 +26,62 @@ Dit experiment hoort bij hypothese 3 en scenario 3: inloggen is de voorwaarde vo
 
 #image("/assets/image-11.png")
 
+== Experiment 2 — Starten en stoppen van de PLC (TP002)
+ 
+_PCAP: `start and stop PLC.pcapng`_
+ 
+Dit experiment hoort bij hypothese 3 en de scenario's 3 en 8. Een op de PLC aanwezig programma is gestart en gestopt. Bij het starten is op pakket No. 26 functiecode `0x40` (decimaal 64) aangetroffen en bij het stoppen op No. 135 functiecode `0x41` (decimaal 65); het eindoordeel in TP002 is geslaagd. Deze waarden bevestigen tevens dat de oorspronkelijke plugin-koppeling (decimaal 58/59) onjuist was en vormden de aanleiding voor de correctie. Doordat start en stop expliciete netwerkcommando's blijken, wordt een spontane technische- of firmwarefout zonder menselijke invloed als verklaring minder waarschijnlijk.
+ 
+#table(
+  columns: (auto, auto, auto, auto),
+  [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
+  [`0x40`], [64], [No. 26], [START\_PLC – het programma op de PLC starten],
+  [`0x41`], [65], [No. 135], [STOP\_PLC – het programma op de PLC stoppen],
+)
+ 
+#image("/assets/image-22.png")
+
+== Experiment 3 — Gewijzigd programma naar de PLC sturen (SEND) (TP003)
+
+_PCAP: `send (ingelogd en in programmering tab, na het bewerken van programma).pcapng`_
+
+Dit experiment hoort bij hypothese 3 en de scenario's 3 en 9 en sluit aan op het in het Plan van Aanpak benoemde experiment "aanpassing maken aan het programma". In Machine Expert is een kleine wijziging aangebracht (ingang `I0.0` naar `I0.2`) en via SEND naar de draaiende PLC geschreven. In de opname staan twee schrijf-functiecodes: `0x6d` (SEND 2 DOWNLOAD) op No. 33 en `0x29` (SEND 1 DOWNLOAD) op No. 35, zonder start/stop-commando. Het is dus aantoonbaar mogelijk een draaiend PLC-programma over het netwerk te overschrijven.
+
+#table(
+  columns: (auto, auto, auto, auto),
+  [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
+  [`0x6d`], [109], [No. 33], [SEND 2 DOWNLOAD – data naar de PLC schrijven (PC → PLC)],
+  [`0x29`], [41], [No. 35], [SEND 1 DOWNLOAD – data naar de PLC schrijven (PC → PLC)],
+)
+
+#image("/assets/image-23.png")
+
+== Experiment 4 — Project van PC naar PLC sturen (download) (TP004)
+
+_PCAP: `PC to Controller (download).pcapng`_
+
+Dit experiment hoort bij hypothese 3 en scenario 3. Een volledig Machine Expert-project is vanaf de PC naar de PLC gestuurd (download); op pakket No. 42 is functiecode `0x36` (DOWNLOAD 1) aangetroffen. Waar SEND een wijziging in een draaiend programma wegschrijft, hoort `0x36` bij het overdragen van een compleet, en dus mogelijk gemanipuleerd, project naar de PLC.
+
+#table(
+  columns: (auto, auto, auto, auto),
+  [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
+  [`0x36`], [54], [No. 42], [DOWNLOAD 1 – volledig project van PC naar PLC (PC → PLC)],
+)
+
+#image("/assets/image-24.png")
+
+== Experiment 5 — Programma van PLC naar PC kopiëren (upload) (TP005)
+
+_PCAP: `Controller to PC (upload).pcapng`_
+
+Dit experiment hoort bij hypothese 3 en de scenario's 3 en 9. Het actieve programma is vanaf de PLC naar de PC gekopieerd (upload). Daarbij zijn twee functiecodes aangetroffen: `0x28` (UPLOAD) op No. 59 en `0x72` (UPLOAD 2) op No. 192, beide in de richting PLC → PC. Hiermee is het op de PLC aanwezige programma via het netwerk uitleesbaar.
+
+#table(
+  columns: (auto, auto, auto, auto),
+  [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
+  [`0x28`], [40], [No. 59], [UPLOAD – programma van PLC naar PC (PLC → PC)],
+  [`0x72`], [114], [No. 192], [UPLOAD 2 – vervolg van de upload (PLC → PC)],
+)
+
+#image("/assets/image-25.png")
+
