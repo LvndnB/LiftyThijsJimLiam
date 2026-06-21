@@ -1,1 +1,15 @@
 = Samenvatting
+In dit onderzoek is een onafhankelijke validatie uitgevoerd van het eindrapport van de onderzoeksgroep McElevatorface binnen de DFRWS 2023 Challenge The Troubled Elevator. Het doel was vast te stellen in hoeverre de oorspronkelijke bevindingen reproduceerbaar en valide zijn aan de hand van dezelfde beschikbare bewijsstukken: een netwerkcapture, een PLC-memorydump, een desktop-memorydump en CCTV-beelden. Daarnaast zijn gecontroleerde experimenten uitgevoerd met een Schneider Modicon M221 PLC om de betekenis van verschillende UMAS-functiecodes te verifiëren.
+
+Tijdens de experimenten zijn handelingen zoals inloggen op de PLC, het starten en stoppen van het programma, het uploaden en downloaden van projecten en het wegschrijven van wijzigingen succesvol gereproduceerd. Hierdoor kon een referentietabel met geverifieerde UMAS-functiecodes worden opgesteld. De resultaten bevestigen dat wijzigingen aan een PLC-programma via het netwerk aantoonbaar sporen achterlaten.
+
+De analyse van de netwerkcapture toonde aan dat een werkstation verbinding maakte met de PLC en daarbij functiecodes gebruikte die overeenkomen met het uploaden, downloaden en wijzigen van PLC-programma's. Uit reconstructie van overgedragen bestanden bleek dat meerdere versies van het PLC-project via het netwerk zijn uitgewisseld. Daarnaast zijn aanwijzingen gevonden voor ARP-spoofing binnen het netwerk, wat wijst op pogingen om netwerkverkeer te onderscheppen of te manipuleren.
+
+In de PLC-memorydump werden verschillende versies van het PLC-project aangetroffen. Vergelijking van deze versies liet zien dat het programma tijdelijk was aangepast, onder meer door wijzigingen in timers, logica en projectinformatie. Een deel van deze wijzigingen werd later weer verwijderd, wat erop wijst dat het programma meermaals is aangepast gedurende de onderzochte periode.
+
+De analyse van de desktop-memorydump bevestigde de afwezigheid van software en processen die gebruikt zouden kunnen worden voor interactie met de PLC. De CCTV-beelden leverden aanvullende context over de tijdlijn van de gebeurtenissen en ondersteunden de interpretatie van de digitale sporen.
+
+Op basis van de gecombineerde bevindingen kan worden geconcludeerd dat de belangrijkste conclusies van McElevatorface reproduceerbaar zijn. De uitgevoerde experimenten bevestigen de betekenis van de relevante UMAS-functiecodes en ondersteunen het scenario waarin wijzigingen aan het PLC-programma via het netwerk hebben plaatsgevonden.
+
+De onafhankelijke analyse heeft echter niet alleen geleid tot bevestiging van eerdere bevindingen, maar ook tot aanvullende resultaten.
+Door middel van file carving op de TCP-streams zijn ZIP-archieven gevonden die PLC-projectbestanden bevatten. Deze bestanden maakten het mogelijk om verschillende projectversies met elkaar te vergelijken en wijzigingen binnen het PLC-programma aan te duiden.

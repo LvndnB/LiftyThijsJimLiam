@@ -19,6 +19,9 @@
 
 #pagebreak()
 
+#include "samenvatting.typ"
+
+
 #set page(header: [
   Lifty - Eindrapportage
 ])
@@ -32,8 +35,7 @@
 )
 #counter(page).update(1)
 
-#include "samenvatting.typ"
-#pagebreak()
+// #pagebreak()
 #include "inleiding.typ"
 #pagebreak()
 #set heading(numbering: "1.")
