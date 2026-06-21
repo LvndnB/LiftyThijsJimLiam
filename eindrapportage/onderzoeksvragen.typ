@@ -2,7 +2,7 @@
 Deze sectie bevat de hoofd- en deelvragen die in dit onderzoek worden behandeld en komen direct uit het "Plan van Aanpak". De hoofdvraag richt zich op de reproduceerbaarheid en validiteit van de conclusies van het eindrapport van Lifty McElevatorface, terwijl de deelvragen zich richten op specifieke aspecten van het netwerkverkeer, de PLC-memorydump en de activiteiten op Kristi's desktop.
 
 == Hoofdvraag
-In hoeverre zijn de conclusies van het eindrapport van Lifty McElevatorface reproduceerbaar en valide op basis van onafhankelijke analyse van de drie bewijsstukken en gecontroleerde experimenten?
+In hoeverre zijn de conclusies van het eindrapport van Lifty McElevatorface reproduceerbaar en valide op basis van onafhankelijke analyse van de vier bewijsstukken en gecontroleerde experimenten?
 
 == Deelvragen
 1.	Welke communicatie in de PCAP wijkt af van normaal verwacht netwerkverkeer richting de PLC?
