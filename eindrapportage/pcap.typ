@@ -42,14 +42,14 @@ _Onderzoeksvraag: Welke hosts communiceren met de PLC en welke verbinding is afw
 
 Het pcap-bestand is ingeladen in NetworkMiner 1.6.1. Via het tabblad _Hosts_, gesorteerd op verzonden pakketten (aflopend), zijn 58 hosts geïdentificeerd op het netwerk. De bovenaan verschijnende hosts hebben de meeste activiteit vertoond. Uit dit overzicht zijn de volgende voor dit onderzoek relevante hosts vastgesteld:
 
-- `192.168.10.45` — PLC (geen OS-label; herkend als industrieel apparaat)
-- `192.168.10.164` — `DESKTOP-RSRBUGJ` (Windows) — werkstation Employee-01
+- `192.168.10.45` - PLC (geen OS-label; herkend als industrieel apparaat)
+- `192.168.10.164` - `DESKTOP-RSRBUGJ` (Windows) - werkstation Employee-01
 
 Daarnaast zijn onder meer `192.168.10.121` (Ubuntu/Linux), `192.168.10.130` (`EGR-AHMED-08`, Windows), `192.168.10.110` en `192.168.10.242` zichtbaar, maar deze zijn niet primair betrokken bij de verdachte activiteit.
 
 #figure(
   image("/assets/image-4.png"),
-  caption: [NetworkMiner — tabblad Hosts, gesorteerd op verzonden pakketten.]
+  caption: [NetworkMiner - tabblad Hosts, gesorteerd op verzonden pakketten.]
 )
 
 In het tabblad _Anomalies_ is daarnaast een mogelijke ARP-spoofing-aanval gedetecteerd gericht op `192.168.10.101`. Dit wordt verderop in dit hoofdstuk verder toegelicht.
@@ -59,7 +59,7 @@ Via _Statistics → Conversations → IPv4_ is het netwerkverkeer gesorteerd op 
 
 #figure(
   image("/assets/image-6.png"),
-  caption: [[PCAP-1]Wireshark — Conversations → IPv4, gesorteerd op datavolume.]
+  caption: [[PCAP-1]Wireshark - Conversations → IPv4, gesorteerd op datavolume.]
 )
 
 #pagebreak()
@@ -79,7 +79,7 @@ Dit filter toont uitsluitend het uitgaande Modbus-verkeer van Employee-01. De ui
 
 #figure(
   image("/assets/image-7.png"),
-  caption: [[PCAP-2]Wireshark — displayfilter op uitgaand Modbus-verkeer van `192.168.10.164`.]
+  caption: [[PCAP-2]Wireshark - displayfilter op uitgaand Modbus-verkeer van `192.168.10.164`.]
 )
 
 === Geïdentificeerde functiecodes
@@ -125,12 +125,12 @@ De byte `5A` (decimaal 90) markeert het begin van het UMAS-gedeelte; de Wireshar
 
 #figure(
   image("/assets/image-8.png"),
-  caption: [Wireshark — filter `UMAS.Umas_Functions_Code == 41`.]
+  caption: [Wireshark - filter `UMAS.Umas_Functions_Code == 41`.]
 )
 
 #figure(
   image("/assets/image-9.png"),
-  caption: [[PCAP-4]Wireshark — ZIP-signatuur `50 4B 03 04` zichtbaar in de pakketpayload van packet no. 236.]
+  caption: [[PCAP-4]Wireshark - ZIP-signatuur `50 4B 03 04` zichtbaar in de pakketpayload van packet no. 236.]
 )
 
 MCElevatorface constateerde via de PLC-memorydump dat er een ZIP-bestand in het geheugen aanwezig was en traceerde dit terug naar het netwerkverkeer bij pakket 46884. In dit onderzoek zijn alle vier de downloadstreams systematisch geëxtraheerd als volledige, werkende ZIP-archieven, waardoor een directe versievergelijking van het PLC-programma per uploadsessie mogelijk is.
@@ -166,7 +166,7 @@ _Onderzoeksvraag: Zijn er aanwijzingen voor andere aanvalstechnieken in het netw
 Zowel in NetworkMiner als in Wireshark zijn sporen aangetroffen van een ARP-spoofing-aanval. Een onbekend MAC-adres probeert het verkeer te onderscheppen dat bestemd is voor Employee-03 (`192.168.10.101`). MCElevatorface deed dezelfde bevinding en omschreef ARP-spoofing als een aanval waarbij de aanvaller zich via valse ARP-berichten positioneert tussen twee communicerende hosts. Er is geen direct verband aangetoond tussen de ARP-spoofing en de PLC-manipulatie door Employee-01; beide onderzoeken konden de aanvaller niet identificeren.
 #figure(
   image("/assets/Screenshot 2026-06-14 174742.png"),
-  caption: [[PCAP-7]Wireshark — ARP-spoofing-aanval gericht op `192.168.10.101`]
+  caption: [[PCAP-7]Wireshark - ARP-spoofing-aanval gericht op `192.168.10.101`]
 )
 
 

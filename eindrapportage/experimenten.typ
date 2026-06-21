@@ -11,7 +11,7 @@ De originele plugin van biero-el-corridor is geschreven voor de Schneider Modico
 
 De plugin herkent UMAS-verkeer aan de byte `0x5A` op offset 7 van de Modbus-PDU, de UMAS-functiecode staat op offset 9. Naast de correctie van de start/stop-codes zijn in de aangepaste plugin per functiecode commentaarregels toegevoegd die vastleggen in welk experiment en bij welk pakketnummer de betreffende code is geverifieerd. De volledige aangepaste plugin (`modbus-umas-schneider.lua`) is als bijlage opgenomen: #ref(<appendixA>).
 
-== Experiment 1 — In- en uitloggen op de PLC (TP001)
+== Experiment 1 - In- en uitloggen op de PLC (TP001)
 _PCAP: `login and logout PLC.pcapng`_
 
 Dit experiment hoort bij hypothese 3 en scenario 3: inloggen is de voorwaarde voor manipulatie op afstand, omdat een client pas na het claimen van de PLC wijzigingen kan wegschrijven. Het sluit aan op de in het Plan van Aanpak benoemde validatie van functiecode 10 (TAKE\_PLC\_RESERVATION). Vanaf de PC is een sessie geopend en weer afgesloten: de opname begint met `INIT_COMM`, waarna de PC het eigenaarschap claimt met `TAKE_PLC_RESERVATION` (`0x10`, No. 14) en dit bij het uitloggen weer vrijgeeft met `RELEASE_PLC_RESERVATION` (`0x11`, No. 159). Beide handelingen zijn daarmee herkenbaar in het netwerk.
@@ -32,7 +32,7 @@ Dit experiment hoort bij hypothese 3 en scenario 3: inloggen is de voorwaarde vo
   caption: [Wireshark-opname van het in- en uitloggen op de PLC (`0x10` en `0x11`).],
 )
 
-== Experiment 2 — Starten en stoppen van de PLC (TP002)
+== Experiment 2 - Starten en stoppen van de PLC (TP002)
  
 _PCAP: `start and stop PLC.pcapng`_
  
@@ -53,7 +53,7 @@ Dit experiment hoort bij hypothese 3 en de scenario's 3 en 8. Een op de PLC aanw
   caption: [Wireshark-opname van het starten en stoppen van de PLC (`0x40` en `0x41`).],
 )
 
-== Experiment 3 — Gewijzigd programma naar de PLC sturen (SEND) (TP003)
+== Experiment 3 - Gewijzigd programma naar de PLC sturen (SEND) (TP003)
 
 _PCAP: `send (ingelogd en in programmering tab, na het bewerken van programma).pcapng`_
 
@@ -74,7 +74,7 @@ Dit experiment hoort bij hypothese 3 en de scenario's 3 en 9 en sluit aan op het
   caption: [Wireshark-opname van de SEND-handeling naar de PLC (`0x6d` en `0x29`).],
 )
 
-== Experiment 4 — Project van PC naar PLC sturen (download) (TP004)
+== Experiment 4 - Project van PC naar PLC sturen (download) (TP004)
 
 _PCAP: `PC to Controller (download).pcapng`_
 
@@ -95,7 +95,7 @@ Dit experiment hoort bij hypothese 3 en scenario 3. Een volledig Machine Expert-
 )
 
 
-== Experiment 5 — Programma van PLC naar PC kopiëren (upload) (TP005)
+== Experiment 5 - Programma van PLC naar PC kopiëren (upload) (TP005)
 
 _PCAP: `Controller to PC (upload).pcapng`_
 
@@ -118,20 +118,20 @@ Dit experiment hoort bij hypothese 3 en de scenario's 3 en 9. Het actieve progra
   caption: [Wireshark-opname van de upload van de PLC (`0x28` en `0x72`).],
 )
 
-== Experiment 6 — Knop aan lamp op de PLC (TP006)
+== Experiment 6 - Knop aan lamp op de PLC (TP006)
 
 Dit experiment hoort bij de hypotheses 1 en 2 en de scenario's 1, 4 en 7. Op de PLC is een programma geplaatst waarin een fysieke drukknop (ingang `I0.0`) een lamp (uitgang `Q0.0`) aanstuurt; daarna is de PLC in RUN gezet en is tijdens een Wireshark-opname de knop ingedrukt.
 
 In het netwerkverkeer is géén statuswijziging van de output zichtbaar en zijn geen UMAS-functiecodes aan de knopdruk te koppelen. De knop-naar-lamp-logica wordt volledig lokaal door de PLC afgehandeld, zonder communicatie met de PC, waardoor deze handeling geen netwerkverkeer genereert. Het experiment is daarmee niet geslaagd en de hypothese verworpen.
 
-Dit is juist een waardevolle bevinding voor de koppeling aan het Plan van Aanpak: omdat fysieke bediening en lokale programmalogica geen sporen in het netwerk achterlaten, kunnen de oorzaken die buiten het netwerk liggen — een door een knopvolgorde getriggerde programmabug (hypothese 1, scenario 1), fysieke of menselijke bediening (hypothese 2, scenario 7) en fysieke manipulatie van knoppen of bekabeling (scenario 4) — niet via de casus-pcap worden aangetoond of uitgesloten. Voor die hypotheses en scenario's is ander bewijsmateriaal nodig, zoals de PLC-memorydump en de CCTV-beelden.
+Dit is juist een waardevolle bevinding voor de koppeling aan het Plan van Aanpak: omdat fysieke bediening en lokale programmalogica geen sporen in het netwerk achterlaten, kunnen de oorzaken die buiten het netwerk liggen - een door een knopvolgorde getriggerde programmabug (hypothese 1, scenario 1), fysieke of menselijke bediening (hypothese 2, scenario 7) en fysieke manipulatie van knoppen of bekabeling (scenario 4) - niet via de casus-pcap worden aangetoond of uitgesloten. Voor die hypotheses en scenario's is ander bewijsmateriaal nodig, zoals de PLC-memorydump en de CCTV-beelden.
 
 #figure(
   image("/assets/image-26.png"),
   caption: [Wireshark-opname van de knopdruk op de PLC.],
 )
 
-== Experiment 7 — Stroomonderbreking van de PLC (TP007)
+== Experiment 7 - Stroomonderbreking van de PLC (TP007)
 
 Dit experiment hoort bij hypothese 4 (en raakt hypothese 1) en de scenario's 2, 5 en 6. Terwijl de PLC in RUN stond en met de PC communiceerde, is tijdens een Wireshark-opname de stroomkabel van de PLC fysiek losgekoppeld.
 
@@ -165,13 +165,13 @@ De experimenten leveren samen de volgende geverifieerde referentietabel op. Naas
 
 MCElevatorface programmeerde een eigen lift op een PLC en voerde vier onderzoeken uit: reconstructie van de lift met knoptests, een knipperlicht, het aanpassen van het programma (knipperinterval van twee naar vijf seconden) en het pushen van een nieuw programma. Een deel hiervan had echter weinig toegevoegde waarde voor de casus: het knipperlicht leverde naar eigen zeggen geen nieuwe bevindingen op en de reconstructie bevestigde slechts de al bekende verbindingscodes. Bovendien zijn hun experimenten niet goed vastgelegd: er zijn geen losse, herleidbare opnamen per handeling, codes worden in hexadecimaal zonder `0x`-prefix genoemd (`40`, `41`, `29`) en enkele codes bleven "onbekende functie 80/81".
 
-Waar de onderzoeken overlappen, bevestigen de uitkomsten elkaar wel. De codes `0x01` (INIT\_COMM) en `0x10` (TAKE\_PLC\_RESERVATION) zijn in beide aangetroffen, en hun `WRITE_AND_READ_REGISTER` is dezelfde byte (`0x29`) die de aangepaste plugin als SEND 1 DOWNLOAD labelt — dezelfde schrijf-functie, andere naam. Daar bovenop is in dit onderzoek, dankzij de aangepaste plugin en de losse opname per handeling, méér en nauwkeuriger vastgelegd: de bij hen onbekende codes (`0x6d`, `0x28`/`0x72`, `0x36`) zijn benoemd, de start/stop-codes zijn op byteniveau vastgesteld (wat tot de plugin-correctie leidde) en de programmawijziging is hier wél reproduceerbaar (`0x6d`/`0x29`). De bevindingen van MCElevatorface worden dus niet tegengesproken maar bevestigd, beter gedocumenteerd en op onderdelen aangevuld.
+Waar de onderzoeken overlappen, bevestigen de uitkomsten elkaar wel. De codes `0x01` (INIT\_COMM) en `0x10` (TAKE\_PLC\_RESERVATION) zijn in beide aangetroffen, en hun `WRITE_AND_READ_REGISTER` is dezelfde byte (`0x29`) die de aangepaste plugin als SEND 1 DOWNLOAD labelt - dezelfde schrijf-functie, andere naam. Daar bovenop is in dit onderzoek, dankzij de aangepaste plugin en de losse opname per handeling, méér en nauwkeuriger vastgelegd: de bij hen onbekende codes (`0x6d`, `0x28`/`0x72`, `0x36`) zijn benoemd, de start/stop-codes zijn op byteniveau vastgesteld (wat tot de plugin-correctie leidde) en de programmawijziging is hier wél reproduceerbaar (`0x6d`/`0x29`). De bevindingen van MCElevatorface worden dus niet tegengesproken maar bevestigd, beter gedocumenteerd en op onderdelen aangevuld.
 
 
 == Conclusie van de experimenten
 
 In de uitgevoerde experimenten is per handeling een geverifieerd verband vastgelegd tussen de handeling op de PLC en de bijbehorende UMAS-functiecode. Inloggen en uitloggen (`0x10`/`0x11`), starten en stoppen (`0x40`/`0x41`), het wegschrijven van een wijziging (`0x6d`/`0x29`), het downloaden van een volledig project (`0x36`) en het uploaden van een programma (`0x28`/`0x72`) zijn elk in een afzonderlijke opname op pakketniveau bevestigd.
 
-Gekoppeld aan het Plan van Aanpak leveren de netwerkgerichte experimenten samen bewijs voor hypothese 3 en in het bijzonder scenario 3, met ondersteuning voor de scenario's 8 en 9. Doordat starten, stoppen en wijzigen aantoonbaar het gevolg zijn van expliciete netwerkcommando's, maken zij hypothese 1 en scenario 2 als verklaring minder waarschijnlijk. Experiment 6 en 7 dekken de overige hypotheses en scenario's: experiment 6 toont aan dat fysieke bediening en lokale programmalogica (hypothese 1 en 2, scenario's 1, 4 en 7) géén netwerksporen achterlaten en dus alleen met andere bewijsstukken te onderzoeken zijn, terwijl experiment 7 laat zien dat een externe stroomonderbreking (hypothese 4, scenario's 5 en 6) en een spontane uitval (scenario 2) wél een herkenbaar — maar van een netwerkstop te onderscheiden — spoor nalaten. Daarmee vormt deze referentie de toetssteen waarmee de handelingen van Employee-01 in de casus-pcap kunnen worden geduid, en draagt zij bij aan de hoofdvraag naar de reproduceerbaarheid en validiteit van de conclusies van MCElevatorface.
+Gekoppeld aan het Plan van Aanpak leveren de netwerkgerichte experimenten samen bewijs voor hypothese 3 en in het bijzonder scenario 3, met ondersteuning voor de scenario's 8 en 9. Doordat starten, stoppen en wijzigen aantoonbaar het gevolg zijn van expliciete netwerkcommando's, maken zij hypothese 1 en scenario 2 als verklaring minder waarschijnlijk. Experiment 6 en 7 dekken de overige hypotheses en scenario's: experiment 6 toont aan dat fysieke bediening en lokale programmalogica (hypothese 1 en 2, scenario's 1, 4 en 7) géén netwerksporen achterlaten en dus alleen met andere bewijsstukken te onderzoeken zijn, terwijl experiment 7 laat zien dat een externe stroomonderbreking (hypothese 4, scenario's 5 en 6) en een spontane uitval (scenario 2) wél een herkenbaar - maar van een netwerkstop te onderscheiden - spoor nalaten. Daarmee vormt deze referentie de toetssteen waarmee de handelingen van Employee-01 in de casus-pcap kunnen worden geduid, en draagt zij bij aan de hoofdvraag naar de reproduceerbaarheid en validiteit van de conclusies van MCElevatorface.
 
 

@@ -31,21 +31,21 @@ In @afbeelding1 is het resultaat van Binwalk te zien nadat het programma de best
 
 #figure(
   image("/assets/image-12.png"),
-  caption: [Resultaat Binwalk scan op eerste ExtRAM en OnChipRAM bestanden.],
+  caption: [[PLC-ExtRAM-1]Resultaat Binwalk scan op eerste ExtRAM en OnChipRAM bestanden.],
 )<afbeelding1>
 
 Na de vondst van het ziparchief is dezelfde scan uitgevoerd op de volgende twee dumps. In @afbeelding2 is te zien dat op dezelfde startwaarde wederom een ziparchief is aangetroffen.
 
 #figure(
   image("/assets/image-13.png"),
-  caption: [Resultaat Binwalk scan op tweede ExtRAM en OnChipRAM bestanden],
+  caption: [[PLC-ExtRAM-1]Resultaat Binwalk scan op tweede ExtRAM en OnChipRAM bestanden],
 )<afbeelding2>
 
 Wegens het gebrek aan aanwijzingen in de OnChipRAM dumps zijn vervolgens enkel de overige ExtRAM bestanden op chronologische volgorde geanalyseerd. In @afbeelding3 zijn de resultaten te zien, welke tevens zijn verwerkt in @tabel1.
 
 #figure(
   image("/assets/image-14.png", width: 90%),
-  caption: [Resultaten Binwalk scans overige ExtRAM bestanden.],
+  caption: [[PLC-ExtRAM-1]Resultaten Binwalk scans overige ExtRAM bestanden.],
 )<afbeelding3>
 
 
@@ -91,7 +91,7 @@ _N.B. Het 'skip' argument zorgt ervoor dat dd pas data kopieert vanaf de waarde 
 
 #figure(
   image("/assets/image-15.png"),
-  caption: [Output dd commando.],
+  caption: [[PLC-ExtRAM-1]Output dd commando.],
 )<afbeelding4>
 In het ziparchief bevindt zich - net als in de geëxtraheerde zips uit de pcap - een `entry`-bestand (fig. 5).
 
@@ -134,7 +134,7 @@ In versie A zijn geen verdachte stukken code aangetroffen, dit wordt daarom gezi
 De andere versies bevatten wel aanpassingen ten opzichte van versie A, welke in de volgende sub-paragrafen zullen worden toegelicht.
 #linebreak()
 
-=== Wijzigingen versie B
+=== Wijzigingen versie B [PLC-ExtRAM-2]
 
 ==== SAME_CALL → attaxk
 
@@ -198,7 +198,7 @@ In versie B zijn er twee extra rungs bij POU "Third Called" ten opzichte van het
   [*Voor*], [`entry1.xml`], [283-315], [POU "Third Called" bevat 5 rungs],
   [*Na*], [`entry3.xml`], [291-335], [POU "Third Called" bevat 7 rungs (2 toegevoegd op regels 324-335)],
 ),
-  caption: [Toevoeging van 2 extra rungs in POU "Third Called".],
+  caption:[Toevoeging van 2 extra rungs in POU "Third Called".],
 )
 
 #pagebreak()
@@ -217,7 +217,7 @@ Ten slotte is onderaan het metadata-bestand een wijziging opgetreden in de naam 
   caption: [Wijziging projectnaam van 'New Project' naar 'SAFE Lab Mafia'.],
 )
 
-=== Wijzigingen versie C
+=== Wijzigingen versie C [PLC-ExtRAM-3]
 
 In versie C worden de eerder gemaakte wijzigingen uit versie B deels teruggedraaid, waarschijnlijk om sporen uit te wissen na een uitgevoerde aanval.
 
@@ -269,7 +269,7 @@ Ten slotte zijn de POU's ook weer gewijzigd naar de originele structuur doordat 
 _N.B. Niet alle wijzigingen uit versie B zijn ongedaan gemaakt: de duur van timer0 is nog altijd 5 seconden, het SAME_CALL memory-bit is niet teruggeplaatst, en de naam van het project is nog altijd 'SAFE Lab Mafia' in plaats van 'New Project'._
 
 #pagebreak()
-=== Wijzigingen versie D
+=== Wijzigingen versie D [PLC-ExtRAM-4]
 
 In deze laatste versie is een extra poging gedaan om meer wijzigingen (uit versie B) ongedaan te maken.
 
@@ -306,7 +306,7 @@ De oorspronkelijke duur van timer0 was 10 seconden. In versie B werd dit aangepa
 )<tabel12>
 
 #pagebreak()
-== Analyse inhoud OnChipRAM
+== Analyse inhoud OnChipRAM [PLC-OnChipRAM-1]
 
 Om mogelijk relevante data uit de OnChipRAM-bestanden te halen, zijn de eerste twee dumps in hex-editor `GHex` geladen (zie @afbeelding7). Dit programma vertaalt de ruwe bytes naar ASCII-karakters. Hierdoor kan bekeken worden of er strings tekst aanwezig zijn die informatie bevatten.
 
