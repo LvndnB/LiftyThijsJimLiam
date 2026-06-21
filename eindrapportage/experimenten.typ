@@ -53,6 +53,7 @@ Dit experiment hoort bij hypothese 3 en de scenario's 3 en 8. Een op de PLC aanw
   caption: [Wireshark-opname van het starten en stoppen van de PLC (`0x40` en `0x41`).],
 )
 
+#pagebreak()
 == Experiment 3 - Gewijzigd programma naar de PLC sturen (SEND) (TP003)
 
 _PCAP: `send (ingelogd en in programmering tab, na het bewerken van programma).pcapng`_
@@ -101,8 +102,6 @@ _PCAP: `Controller to PC (upload).pcapng`_
 
 Dit experiment hoort bij hypothese 3 en de scenario's 3 en 9. Het actieve programma is vanaf de PLC naar de PC gekopieerd (upload). Daarbij zijn twee functiecodes aangetroffen: `0x28` (UPLOAD) op No. 59 en `0x72` (UPLOAD 2) op No. 192, beide in de richting PLC → PC. Hiermee is het op de PLC aanwezige programma via het netwerk uitleesbaar.
 
-#pagebreak()
-
 #figure(
   table(
     columns: (auto, auto, auto, auto),
@@ -118,6 +117,7 @@ Dit experiment hoort bij hypothese 3 en de scenario's 3 en 9. Het actieve progra
   caption: [Wireshark-opname van de upload van de PLC (`0x28` en `0x72`).],
 )
 
+#pagebreak()
 == Experiment 6 - Knop aan lamp op de PLC (TP006)
 
 Dit experiment hoort bij de hypotheses 1 en 2 en de scenario's 1, 4 en 7. Op de PLC is een programma geplaatst waarin een fysieke drukknop (ingang `I0.0`) een lamp (uitgang `Q0.0`) aanstuurt; daarna is de PLC in RUN gezet en is tijdens een Wireshark-opname de knop ingedrukt.
@@ -139,6 +139,7 @@ De abrupte onderbreking is herkenbaar in het netwerkverkeer: de communicatie sto
 
 Gekoppeld aan het Plan van Aanpak laat dit zien dat een externe factor (hypothese 4, scenario 5: stroomstoring) of een hardware- of onderhoudsprobleem (scenario 6) een eigen, herkenbaar spoor achterlaat. Doordat er geen stopcommando (`0x41`) aan voorafgaat maar alleen retransmissions en plotselinge stilte, is een stroomuitval of spontane uitval (scenario 2) duidelijk te onderscheiden van een doelbewust via het netwerk verstuurde stop (zoals in experiment 2).
 
+#pagebreak()
 == Overzicht van de geverifieerde functiecodes
 
 De experimenten leveren samen de volgende geverifieerde referentietabel op. Naast de hieronder genoemde codes bevatten de opnamen ook standaard sessie- en pollingverkeer (onder meer `0x01` INIT\_COMM, `0x04` READ\_PLC\_INFO, `0x24` READ\_COILS\_REGISTERS en de bevestiging `0xfe` Response OK); deze zijn niet handelingspecifiek en worden in de casus-analyse weggefilterd.
@@ -167,7 +168,7 @@ MCElevatorface programmeerde een eigen lift op een PLC en voerde vier onderzoeke
 
 Waar de onderzoeken overlappen, bevestigen de uitkomsten elkaar wel. De codes `0x01` (INIT\_COMM) en `0x10` (TAKE\_PLC\_RESERVATION) zijn in beide aangetroffen, en hun `WRITE_AND_READ_REGISTER` is dezelfde byte (`0x29`) die de aangepaste plugin als SEND 1 DOWNLOAD labelt - dezelfde schrijf-functie, andere naam. Daar bovenop is in dit onderzoek, dankzij de aangepaste plugin en de losse opname per handeling, méér en nauwkeuriger vastgelegd: de bij hen onbekende codes (`0x6d`, `0x28`/`0x72`, `0x36`) zijn benoemd, de start/stop-codes zijn op byteniveau vastgesteld (wat tot de plugin-correctie leidde) en de programmawijziging is hier wél reproduceerbaar (`0x6d`/`0x29`). De bevindingen van MCElevatorface worden dus niet tegengesproken maar bevestigd, beter gedocumenteerd en op onderdelen aangevuld.
 
-
+#pagebreak()
 == Conclusie van de experimenten
 
 In de uitgevoerde experimenten is per handeling een geverifieerd verband vastgelegd tussen de handeling op de PLC en de bijbehorende UMAS-functiecode. Inloggen en uitloggen (`0x10`/`0x11`), starten en stoppen (`0x40`/`0x41`), het wegschrijven van een wijziging (`0x6d`/`0x29`), het downloaden van een volledig project (`0x36`) en het uploaden van een programma (`0x28`/`0x72`) zijn elk in een afzonderlijke opname op pakketniveau bevestigd.
