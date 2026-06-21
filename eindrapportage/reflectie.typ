@@ -12,3 +12,8 @@ Mijn zwakke punt is dat ik mijn keuzes niet altijd goed vastlegde. Mijn werk klo
 == Thijs van der Zwan
 
 == Jim van Dijk
+Tijdens dit project heb ik ervaring opgedaan met het valideren van digitaal forensisch onderzoek aan de hand van dezelfde bewijsstukken van een eerdere onderzoeksgroep. Hierbij heb ik analyses uitgevoerd op een desktop memory dump, netwerk captures bekeken en experimenten uitgevoerd met de PLC, om te kijken hoe bepaalde events er uit zagen in netwerkverkeer.
+
+Achteraf had ik graag meer willen doen omtremt de PLC-memory dump en netwerkcapture. Dit omdat bleek dat er weinig was om diep in te duiken rond de desktop dump, en ik hier niet veel nieuws heb gevonden. Gelukkig heb ik genoeg kunnen mee-denken en kijken om wat op te steken over communicatie over het Modbus protocol en over PLC's in het algemeen.
+
+Verder is een verbeterpunt tijdig mijn logboek bijhouden. Het is dit keer niet zo erg, omdat ik wel notities bijhield. Maar het is handiger om vanaf begins af aan gelijk te loggen. Dan is het veel makkelijker om overzicht te houden, en hoeft dit niet achteraf bij elkaar gezocht te worden.
