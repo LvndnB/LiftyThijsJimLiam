@@ -1,14 +1,23 @@
-#show heading.where(level: 1): set text(size: 20pt)
-#show heading.where(level: 2): set text(size: 16pt)
-#show heading.where(level: 3): set text(size: 14pt)
-#show heading.where(level: 4): set text(size: 11pt)
+
 
 = Memory-dump PLC Analyse
+De volgende deelvragen uit het Plan van Aanpak zijn leidend voor dit hoofdstuk:
+
+- *DV3:* Welke aanwijzingen in de PLC-memorydump wijzen op een wijziging van het PLC-programma?
+- *DV4:* In welke toestand bevindt de PLC zich op het moment van de dump, en wat zegt dit over het liftgedrag?
+- *DV7* In hoeverre zijn de bevindingen uit het rapport reproduceerbaar a.d.h.v. onafhankelijk analyse met dezelfde bewijsstukken?
+
+Deze deelvragen worden beantwoord aan de hand van de volgende onderzoeksvragen, die in de analyse verder worden uitgewerkt:
+- Welke data is te vinden in de External- en On-chip RAM dumps van de PLC?
+- Hoe kan het ziparchief uit de External RAM dumps worden geëxtraheerd en wat is de inhoud hiervan?
+- Welke wijzigingen zijn er in de verschillende versies van het entry-bestand te zien?
+- Welke sporen van de aanval zijn er in de On-chip RAM dumps te vinden?                                                  
+
 == Algemeen beeld
 
 Er zijn twee soorten PLC memory dumps aangeleverd: External RAM en On-chip RAM. Van elke soort dump zijn 7 bestanden aangeleverd. Elk bestand bevat de data uit het RAM-geheugen op dat moment. Het eerste bestand heeft als datum en tijdstip: 29-06-2023 14:35:09. Aan de datum en tijd in de bestandsnamen is te zien dat elke 15 minuten een memory dump wordt gemaakt.
 
-Om de memory dumps te analyseren is eerst het eerst van belang om te weten welke data in dit geheugen aanwezig is, en hoe deze data gestructureerd wordt.
+Om de memory dumps te analyseren is het eerst van belang om te weten welke data in dit geheugen aanwezig is, en hoe deze data gestructureerd wordt.
 
 == Magic numbers
 
@@ -18,21 +27,21 @@ Met behulp van deze magic numbers kan bij een voorheen onbekend bestand worden v
 
 Om deze magic numbers in de verschillende memory dumps te vinden is het programma `Binwalk` gebruikt in een Linux-terminal. Binwalk bevat een uitgebreide bibliotheek aan magic numbers en scant de dump-bestanden ernaar. Op deze manier kunnen mogelijk embedded bestanden uit de dumps worden gehaald.#footnote[@devttys02024binwalk]
 
-In onderstaande afbeelding is het resultaat van Binwalk te zien nadat het programma de bestanden `ExtRAM_20230629143509`.bin' en `OnChipRAM_20230629143506.bin` heeft geanalyseerd op embedded bestanden. Het programma trof bij het ExtRAM bestand een embedded ziparchief aan. Het OnChipRAM bestand kwam zonder resultaat terug.
+In @afbeelding1 is het resultaat van Binwalk te zien nadat het programma de bestanden `ExtRAM_20230629143509.bin` en `OnChipRAM_20230629143506.bin` heeft geanalyseerd op embedded bestanden. Het programma trof bij het ExtRAM-bestand een embedded ziparchief aan. Het OnChipRAM bestand kwam zonder resultaat terug.
 
 #figure(
   image("/assets/image-12.png"),
   caption: [Resultaat Binwalk scan op eerste ExtRAM en OnChipRAM bestanden.],
 )<afbeelding1>
 
-Na de vondst van het ziparchief is dezelfde scan uitgevoerd op de volgende twee dumps. In @afbeelding2 is te zien dat op dezelfde geheugenadressen wederom een ziparchief is aangetroffen.
+Na de vondst van het ziparchief is dezelfde scan uitgevoerd op de volgende twee dumps. In @afbeelding2 is te zien dat op dezelfde startwaarde wederom een ziparchief is aangetroffen.
 
 #figure(
   image("/assets/image-13.png"),
   caption: [Resultaat Binwalk scan op tweede ExtRAM en OnChipRAM bestanden],
 )<afbeelding2>
 
-Wegens het gebrek aan aanwijzingen in de OnChipRAM dumps zijn vervolgens enkel de overige ExtRAM bestanden op chronologische volgorde geanalyseerd. In onderstaande afbeelding zijn de resultaten te zien, welke tevens zijn verwerkt in @tabel1.
+Wegens het gebrek aan aanwijzingen in de OnChipRAM dumps zijn vervolgens enkel de overige ExtRAM bestanden op chronologische volgorde geanalyseerd. In @afbeelding3 zijn de resultaten te zien, welke tevens zijn verwerkt in @tabel1.
 
 #figure(
   image("/assets/image-14.png", width: 90%),
@@ -60,7 +69,9 @@ Op basis van deze gegevens blijkt dat de startwaarde van het ziparchief in alle 
 
 In het onderzoek @zubair2022pem wordt beschreven dat er magic numbers in het external RAM van Schneider M221 PLC zijn aangetroffen die corresponderen met een ziparchief. Dit archief is geëxtraheerd en gedecomprimeerd naar een `XML-bestand`. De onderzoekers konden vaststellen dat dit `XML-bestand` de semantiek van de data-objecten beschrijft, welke in de besturingslogica worden gebruikt. Hiermee kan vervolgens de ladder-logica van het PLC-programma deels worden vastgesteld.
 
-Als de verandering van de totale grootte van de ziparchieven wordt gecombineerd met de informatie uit het onderzoek kan geconstateerd worden dat de control logic van de PLC mogelijk is gewijzigd.
+Op basis van deze informatie is als volgende stap gekozen om de ziparchieven uit de memorydumps te extraheren en proberen de inhoud hiervan te bekijken. Als namelijk de verandering in bestandsgrootte van de ziparchieven wordt gecombineerd met de informatie uit het onderzoek kan geconstateerd worden dat de control logic van de PLC mogelijk is gewijzigd. 
+
+
 #pagebreak()
 
 == Extraheren en decomprimeren van ziparchief uit memory dump
@@ -82,14 +93,14 @@ _N.B. Het 'skip' argument zorgt ervoor dat dd pas data kopieert vanaf de waarde 
   image("/assets/image-15.png"),
   caption: [Output dd commando.],
 )<afbeelding4>
-In het ziparchief bevindt zich een `entry`-bestand (fig. 5).
+In het ziparchief bevindt zich - net als in de geëxtraheerde zips uit de pcap - een `entry`-bestand (fig. 5).
 
 #figure(
-  image("/assets/image-16.png"),
+  image("/assets/image-16.png", width: 75%),
   caption: [Inhoud geëxtraheerd ziparchief ExtRAM dump 1.],
 )<afbeelding5>
 
-In het entry-bestand is metadata van het PLC-programma te zien (zie @afbeelding6). Met de namen van gebruikte I/O adressen kan worden vastgesteld welke fysieke sensoren en actuatoren zijn aangesloten. Ook is terug te zien welke interne toestandsvariabelen en counters worden gebruikt.
+In het entry-bestand is - net als in de pcap analyse - metadata van het PLC-programma te zien (zie @afbeelding6). Met de namen van gebruikte I/O adressen kan worden vastgesteld welke fysieke sensoren en actuatoren zijn aangesloten. Ook is terug te zien welke interne toestandsvariabelen en counters worden gebruikt.
 
 #figure(
   image("/assets/image-17.png", width: 75%),
@@ -203,7 +214,7 @@ Ten slotte is onderaan het metadata-bestand een wijziging opgetreden in de naam 
 ),
   caption: [Wijziging projectnaam van 'New Project' naar 'SAFE Lab Mafia'.],
 )
-=
+
 === Wijzigingen versie C
 
 In versie C worden de eerder gemaakte wijzigingen uit versie B deels teruggedraaid, waarschijnlijk om sporen uit te wissen na een uitgevoerde aanval.
@@ -295,12 +306,12 @@ De oorspronkelijke duur van timer0 was 10 seconden. In versie B werd dit aangepa
 #pagebreak()
 == Analyse inhoud OnChipRAM
 
-Om mogelijk relevante data uit de OnChipRAM-bestanden te halen, zijn de eerste twee dumps in hex-editor `HxD` geladen (zie @afbeelding7). Dit programma vertaalt de ruwe bytes naar ASCII-karakters. Hierdoor kan bekeken worden of er strings tekst aanwezig zijn die informatie bevatten.
+Om mogelijk relevante data uit de OnChipRAM-bestanden te halen, zijn de eerste twee dumps in hex-editor `GHex` geladen (zie @afbeelding7). Dit programma vertaalt de ruwe bytes naar ASCII-karakters. Hierdoor kan bekeken worden of er strings tekst aanwezig zijn die informatie bevatten.
 
 #figure(
-  image("/assets/image-18.png"),
+  image("/assets/image-18.png", width: 75%),
 )<afbeelding7>
-#align(left)[_Figuur 7: Deel inhoud tweede OnChipRAM bestand in HxD._]
+#align(left)[_Figuur 7: Deel inhoud tweede OnChipRAM bestand in GHex._]
 
 Nadat hier meerdere strings in te zien waren - bijvoorbeeld `DESKTOP-RSRBUGJ`, `New Project`, `192.168.10.45` - is het Linux commando `strings` gebruikt om alle strings uit een dump te detecteren en weer te geven:
 
@@ -343,11 +354,21 @@ In het strings-resultaat van dump 3 valt in het bijzonder op dat de projectnaam 
 
 Op basis van de bevindingen kan met grote mate van zekerheid worden geconcludeerd dat er een gerichte aanval op het PLC-programma van de lift heeft plaatsgevonden.
 
-De toevoeging van de comment 'attaxk' - een nauwelijks verhulde verwijzing naar het woord 'attack' - wijst onmiskenbaar op een opzettelijke kwaadaardige ingreep in de control logic. Het opeenvolgende patroon van wijzigingen in versies B, C en D toont een aanval gevolgd door twee fasen van systematische sporenverwijdering, wat kenmerkend is voor doelbewust handelen. Kritieke programmaonderdelen zijn gemanipuleerd: de gewijzigde timer0-instelling (van 10 naar 5 seconden), de toevoeging van ongekende timers en de extra ladder-logica in POU "Third Called" kunnen directe gevolgen hebben gehad voor het gedrag van de lift. Het vergeten terugdraaien van de projectnaam "SAFE Lab Mafia" vormt een onweerlegbaar resterend spoor van de aanval.
+De toevoeging van de comment 'attaxk' wijst op een opzettelijke kwaadaardige ingreep in de control logic. Het opeenvolgende patroon van wijzigingen in versies B, C en D toont een aanval gevolgd door twee fasen van systematische sporenverwijdering, wat kenmerkend is voor doelbewust handelen. Kritieke programmaonderdelen zijn gemanipuleerd: de gewijzigde timer0-instelling (van 10 naar 5 seconden), de toevoeging van ongekende timers en de extra ladder-logica in POU "Third Called" kunnen directe gevolgen hebben gehad voor het gedrag van de lift. Het vergeten terugdraaien van de projectnaam "SAFE Lab Mafia" is een duidelijk spoor van de aanval.
 
 De analyse van de OnChipRAM-dumps versterkt deze conclusie en geeft aanvullende aanwijzingen over de herkomst van de aanval. Uit de OnChipRAM-dumps zijn via ASCII-analyse en het strings-commando meerdere forensisch relevante gegevens geëxtraheerd, waaronder de projectnaam, het IP-adres, het MAC-adres, de firmware-versie en het modelnummer van de PLC. Het feit dat de projectnaam 'SAFE Lab Mafia' ook in de OnChipRAM-dumps vanaf dump 3 zichtbaar is, bevestigt de bevindingen uit de ExtRAM-analyse en toont aan dat de wijziging actief in het geheugen van de PLC aanwezig was.
 
 Opvallend is dat vanaf dump 2 het aantal gevonden strings aanzienlijk toeneemt en dat er domeinnamen en Windows-gebruikersnamen zichtbaar zijn. Dit wijst erop dat de PLC in de periode voorafgaand aan de aanval via het netwerk is benaderd. Deze gegevens kunnen met vervolgonderzoek op de netwerkcapture toegepast worden, zodat de identiteit en het exacte tijdstip van de toegang mogelijk verder kunnen worden vastgesteld.
+
+Deze bevindingen komen sterk overeen met die uit de PCAP-analyse (hoofdstuk 4). Beide analyses leveren bewijsstukken op waarin dezelfde kernfeiten werden gevonden: de comment 'attaxk', de gewijzigde timerwaarden enzovoort. Ook het patroon van aanval gevolgd door gedeeltelijke sporenverwijdering zijn zowel in de vier geëxtraheerde entry-bestanden uit de TCP-streams als in de zeven ExtRAM-dumps aangetroffen. Waar in de PCAP-analyse dit verband rechtstreeks met de verantwoordelijke host (192.168.10.164, Employee-01) wordt gelegd via de UMAS-functiecodes,  bevestigt de memory dump-analyse onafhankelijk dat deze wijzigingen daadwerkelijk op de PLC zijn aangekomen en daar over tijd aanwezig zijn gebleven. De twee bewijsstukken versterken elkaar daarmee wederzijds.
+
+*DV3* wordt beantwoord: de differentiële analyse van de ExtRAM-dumps toont concrete aanwijzingen voor wijziging van het PLC-programma: de toegevoegde comment 'attaxk', de aangepaste timer0-instelling, de toegevoegde timers 2 en 3, de extra rungs in POU "Third Called" en de gewijzigde projectnaam.
+
+*DV4* wordt beantwoord: op het moment van de dumps bevond de PLC zich in een toestand waarin kritieke timinglogica (timer0, plus twee onbekende extra timers) was aangepast en extra ladder-logica was toegevoegd aan de aansturing van de lift. Dit kan direct invloed hebben gehad op het liftgedrag, al kan op basis van de metadata alleen niet worden vastgesteld wat het exacte functionele effect was.
+
+
+
+#pagebreak()
 
 == Beoordeling PLC memorydump analyse McElevatorFace
 

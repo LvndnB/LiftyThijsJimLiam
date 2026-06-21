@@ -1,3 +1,8 @@
+#show heading.where(level: 1): set text(size: 20pt)
+#show heading.where(level: 2): set text(size: 16pt)
+#show heading.where(level: 3): set text(size: 14pt)
+#show heading.where(level: 4): set text(size: 11pt)
+
 #set document(
   title: [Lifty - Eindrapportage],
   author: "Liam van den Berg, Thijs van der Zwan, Jim van Dijk"

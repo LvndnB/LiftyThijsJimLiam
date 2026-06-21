@@ -1,7 +1,7 @@
 = Experimenten
 == Onderzoeksopzet en gebruikte tools
 
-De experimenten zijn uitgevoerd in een afgeschermd testnetwerk met een Schneider Modicon M221 PLC en een laptop met EcoStruxure Machine Expert – Basic. Beide apparaten bevonden zich in hetzelfde subnet: de laptop op `192.168.243.110` en de PLC op `192.168.243.190`. De onderzoeksomgevingen zijn uitgebreider beschreven in het portfolio bestand "Onderzoeksomgevingen". Voor elk experiment is dezelfde werkwijze aangehouden: in Wireshark werd een live capture gestart, vervolgens werd in Machine Expert (of via de fysieke knoppen) de te onderzoeken handeling uitgevoerd, en daarna werd de capture gestopt en als afzonderlijk `.pcapng`-bestand opgeslagen. Deze opnamen zijn als bijlage in het portfolio opgenomen.
+De experimenten zijn uitgevoerd in een afgeschermd testnetwerk met een Schneider Modicon M221 PLC en een laptop met EcoStruxure Machine Expert - Basic. Beide apparaten bevonden zich in hetzelfde subnet: de laptop op `192.168.243.110` en de PLC op `192.168.243.190`. De onderzoeksomgevingen zijn uitgebreider beschreven in het portfolio bestand "Onderzoeksomgevingen". Voor elk experiment is dezelfde werkwijze aangehouden: in Wireshark werd een live capture gestart, vervolgens werd in Machine Expert (of via de fysieke knoppen) de te onderzoeken handeling uitgevoerd, en daarna werd de capture gestopt en als afzonderlijk `.pcapng`-bestand opgeslagen. Deze opnamen zijn als bijlage in het portfolio opgenomen.
 
 Voor het decoderen van het UMAS-verkeer is gebruikgemaakt van een aangepaste Wireshark-plugin, gebaseerd op het open-source project van biero-el-corridor #cite(<bierocorridor_umasplugin>). Met deze plugin worden de UMAS-functiecodes rechtstreeks in de Wireshark-pakketweergave zichtbaar als een afzonderlijke UMAS-laag. Hierdoor kon het verkeer direct in Wireshark worden uitgelezen en gefilterd, zonder dat de pcap eerst naar Excel hoefde te worden geëxporteerd. MCElevatorface gebruikte voor hun analyse wel een exportstap: zij verwerkten de pakketdata via een zelfgeschreven script in een Excel-bestand.
 
@@ -75,6 +75,8 @@ Dit experiment hoort bij hypothese 3 en scenario 3. Een volledig Machine Expert-
 _PCAP: `Controller to PC (upload).pcapng`_
 
 Dit experiment hoort bij hypothese 3 en de scenario's 3 en 9. Het actieve programma is vanaf de PLC naar de PC gekopieerd (upload). Daarbij zijn twee functiecodes aangetroffen: `0x28` (UPLOAD) op No. 59 en `0x72` (UPLOAD 2) op No. 192, beide in de richting PLC → PC. Hiermee is het op de PLC aanwezige programma via het netwerk uitleesbaar.
+
+#pagebreak()
 
 #table(
   columns: (auto, auto, auto, auto),

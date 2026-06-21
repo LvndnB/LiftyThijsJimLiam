@@ -53,6 +53,8 @@ Via _Statistics → Conversations → IPv4_ is het netwerkverkeer gesorteerd op 
 
 #image("/assets/image-6.png")
 
+#pagebreak()
+
 == Analyse van het Modbus/UMAS-verkeer
 _Onderzoeksvraag: Welke UMAS-functiecodes zijn ingezet door de verdachte host en wat beschrijven deze?_
 
@@ -131,6 +133,7 @@ MCElevatorface ontdekte de comment `attaxk` en de naamswijziging naar `SAFE Lab 
 
 In deze analyse zijn deze bevindingen via een onafhankelijke route geverifieerd. Niet via de memorydumps, maar rechtstreeks vanuit het netwerkverkeer. Door alle vier TCP-streams te extraheren en de `entry`-bestanden te vergelijken is vastgesteld dat dit it overeenkomt met de conclusie van MCElevatorface dat alle aanpassingen werden teruggedraaid behalve de naamswijziging.
 
+#pagebreak()
 == ARP-spoofing
 _Onderzoeksvraag: Zijn er aanwijzingen voor andere aanvalstechnieken in het netwerkverkeer?_
 

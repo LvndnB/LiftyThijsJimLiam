@@ -1,4 +1,16 @@
 = Memory-dump Desktop Analyse
+De volgende deelvragen uit het Plan van Aanpak zijn leidend voor dit hoofdstuk:
+
+- *DV5* Welk verband is er aantoonbaar tussen de activiteit op de desktop van Kristi en het lift-incident?
+- *DV6* Welke rol heeft de software op Kristi's computer gespeeld bij het lift-incident?
+- *DV7* In hoeverre zijn de bevindingen uit het rapport reproduceerbaar a.d.h.v. onafhankelijk analyse met dezelfde bewijsstukken?
+
+Deze deelvragen worden beantwoord aan de hand van de volgende onderzoeksvragen, die in de analyse verder worden uitgewerkt:
+-
+-
+-
+-
+
 Voor dit onderdeel is de analyse van de desktop memory dump door de eerdere projectgroep opnieuw uitgevoerd. Het doel is om vast te stellen of de gebruikte methode reproduceerbaar is en of de getrokken conclusies worden ondersteund door de beschikbare artefacten.
 
 == Image-informatie
