@@ -59,7 +59,7 @@ Via _Statistics → Conversations → IPv4_ is het netwerkverkeer gesorteerd op 
 
 #figure(
   image("/assets/image-6.png"),
-  caption: [Wireshark — Conversations → IPv4, gesorteerd op datavolume.]
+  caption: [[PCAP-1]Wireshark — Conversations → IPv4, gesorteerd op datavolume.]
 )
 
 #pagebreak()
@@ -79,7 +79,7 @@ Dit filter toont uitsluitend het uitgaande Modbus-verkeer van Employee-01. De ui
 
 #figure(
   image("/assets/image-7.png"),
-  caption: [Wireshark — displayfilter op uitgaand Modbus-verkeer van `192.168.10.164`.]
+  caption: [[PCAP-2]Wireshark — displayfilter op uitgaand Modbus-verkeer van `192.168.10.164`.]
 )
 
 === Geïdentificeerde functiecodes
@@ -103,14 +103,18 @@ _Onderzoeksvraag: Welke gegevens zijn via het netwerk naar de PLC overgedragen e
 === Identificatie van de downloadstreams
 Met behulp van het UMAS-filter `UMAS.Umas_Functions_Code == 41` zijn de vier momenten geïdentificeerd waarop Employee-01 data naar de PLC stuurt. In dit filter is 41 de *decimale* waarde, overeenkomend met 0x29 (SEND 1 DOWNLOAD). De bijbehorende TCP-streams starten bij de volgende pakketnummers:
 
-#table(
-  columns: (auto, auto, auto),
-  [*Stream*], [*Startpakket*], [*Tijdstip (29-06-2023)*],
-  [1], [186], [20:27:51],
-  [2], [47116], [21:00:24],
-  [3], [86200], [21:24:59],
-  [4], [115961], [21:46:48],
+#figure(
+  table(
+    columns: 3,
+    [*Stream*], [*Startpakket*], [*Tijdstip (29-06-2023)*],
+    [1], [186], [20:27:51],
+    [2], [47116], [21:00:24],
+    [3], [86200], [21:24:59],
+    [4], [115961], [21:46:48],
+  ),
+  caption: [[PCAP-3]Identificatie van de vier downloadstreams]
 )
+
 //SCRIPT IN BIJLAGE
 Per stream is via _Follow → TCP Stream_ de ruwe binaire data geëxporteerd als `.bin`-bestand. Elk UMAS-frame in de stream heeft de volgende structuur, zoals beschreven door Liras en la Red
 #cite(<lirasenlared2017>):
@@ -126,7 +130,7 @@ De byte `5A` (decimaal 90) markeert het begin van het UMAS-gedeelte; de Wireshar
 
 #figure(
   image("/assets/image-9.png"),
-  caption: [Wireshark — ZIP-signatuur `50 4B 03 04` zichtbaar in de pakketpayload van packet no. 236.]
+  caption: [[PCAP-4]Wireshark — ZIP-signatuur `50 4B 03 04` zichtbaar in de pakketpayload van packet no. 236.]
 )
 
 MCElevatorface constateerde via de PLC-memorydump dat er een ZIP-bestand in het geheugen aanwezig was en traceerde dit terug naar het netwerkverkeer bij pakket 46884. In dit onderzoek zijn alle vier de downloadstreams systematisch geëxtraheerd als volledige, werkende ZIP-archieven, waardoor een directe versievergelijking van het PLC-programma per uploadsessie mogelijk is.
@@ -139,7 +143,7 @@ De vier `entry`-bestanden zijn onderling vergeleken. De resultaten zijn als volg
 
 *Stream1 – originele configuratie (49.417 bytes, 1.408 regels):* Het bestand bevat het ongewijzigde PLC-programma. De projectnaam is `New Project` (regel 1384). Een variabele op geheugenadres %M60 heeft op regel 171 symbool `SAME_CALL` met comment `SameFloorCall`. Een timer is ingesteld op een preset van 10 seconden (base: OneSecond).
 
-*Stream2 – gemanipuleerde versie (49.888 bytes, 1.428 regels):* Dit bestand wijkt significant af van Stream 1; de vergelijking toont 895 afwijkende regels, beginnend vanaf regel 169. De meest opvallende wijziging staat op regel 171: de variabele `SAME_CALL` is vervangen door een variabele op adresindex 35 zonder symboolnaam maar met de comment `attaxk`. Tevens zijn de timerwaarden gewijzigd: de preset is aangepast naar 5.000 milliseconden (base: OneMilliSeconds) voor meerdere timers. De projectnaam is in deze versie gewijzigd naar `SAFE Lab Mafia` (regel 1404). Dit is de enige versie waarin de comment `attaxk` aanwezig is.
+*Stream2 – [PCAP-5]gemanipuleerde versie (49.888 bytes, 1.428 regels):* Dit bestand wijkt significant af van Stream 1; de vergelijking toont 895 afwijkende regels, beginnend vanaf regel 169. De meest opvallende wijziging staat op regel 171: de variabele `SAME_CALL` is vervangen door een variabele op adresindex 35 zonder symboolnaam maar met de comment `attaxk`. Tevens zijn de timerwaarden gewijzigd: de preset is aangepast naar 5.000 milliseconden (base: OneMilliSeconds) voor meerdere timers. De projectnaam is in deze versie gewijzigd naar `SAFE Lab Mafia` (regel 1404). Dit is de enige versie waarin de comment `attaxk` aanwezig is.
 #figure(
   image("/assets/image-10.png"),
   caption: [`entry` Stream 1 vs Stream 2.]
@@ -147,7 +151,7 @@ De vier `entry`-bestanden zijn onderling vergeleken. De resultaten zijn als volg
 
 *Stream3 – tussenversie (49.144 bytes, 1.397 regels):* Dit is het kleinste bestand van de vier. De variabele `SAME_CALL` en bijbehorende comment ontbreken. De projectnaam is ook in deze versie `SAFE Lab Mafia` (regel 1373). De timerwaarden en structuur wijken nog steeds af van Stream 1.
 
-*Stream4 – definitieve versie (49.420 bytes, 1.408 regels):* Dit bestand is vrijwel identiek aan Stream 1; de vergelijking heeft slechts 1 afwijkende regel. Op regel 1384 staat de projectnaam `SAFE Lab Mafia`, als enige overblijvende wijziging ten opzichte van het origineel. De variabele `SAME_CALL` en comment zijn hersteld en de comment `attaxk` is niet meer aanwezig.
+*Stream4 – [PCAP-6]definitieve versie (49.420 bytes, 1.408 regels):* Dit bestand is vrijwel identiek aan Stream 1; de vergelijking heeft slechts 1 afwijkende regel. Op regel 1384 staat de projectnaam `SAFE Lab Mafia`, als enige overblijvende wijziging ten opzichte van het origineel. De variabele `SAME_CALL` en comment zijn hersteld en de comment `attaxk` is niet meer aanwezig.
 
 === Vergelijking met MCElevatorface
 
@@ -160,6 +164,11 @@ In deze analyse zijn deze bevindingen via een onafhankelijke route geverifieerd.
 _Onderzoeksvraag: Zijn er aanwijzingen voor andere aanvalstechnieken in het netwerkverkeer?_
 
 Zowel in NetworkMiner als in Wireshark zijn sporen aangetroffen van een ARP-spoofing-aanval. Een onbekend MAC-adres probeert het verkeer te onderscheppen dat bestemd is voor Employee-03 (`192.168.10.101`). MCElevatorface deed dezelfde bevinding en omschreef ARP-spoofing als een aanval waarbij de aanvaller zich via valse ARP-berichten positioneert tussen twee communicerende hosts. Er is geen direct verband aangetoond tussen de ARP-spoofing en de PLC-manipulatie door Employee-01; beide onderzoeken konden de aanvaller niet identificeren.
+#figure(
+  image("/assets/Screenshot 2026-06-14 174742.png"),
+  caption: [[PCAP-7]Wireshark — ARP-spoofing-aanval gericht op `192.168.10.101`]
+)
+
 
 == Conclusie
 De analyse van de PCAP-opname toont aan dat Employee-01 (`192.168.10.164`) op 29 juni 2023 vier maal een PLC-programma heeft overgedragen naar de PLC (`192.168.10.45`) via UMAS-functiecodes over Modbus/TCP. Via file carving zijn alle vier programmaversies gereconstrueerd. De versies tonen een duidelijke chronologie: het originele programma (`New Project`) werd overschreven met een gemanipuleerde versie met de comment `attaxk` en gewijzigde timerwaarden, gevolgd door tussenversies, en uiteindelijk een versie die vrijwel identiek is aan het origineel. Op de projectnaam na, die blijft gewijzigd naar `SAFE Lab Mafia`.
