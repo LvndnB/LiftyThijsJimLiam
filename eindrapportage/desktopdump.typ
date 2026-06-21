@@ -32,9 +32,20 @@ caption: [Systeeminformatie, geextract uit memorydump met Volatility3.],
 )<system_info>
 
 == Procesanalyse
-De proceslijst bevat voornamelijk standaard Windows-processen, Microsoft Edge, OneDrive, VMware Tools en Microsoft Defender. Er zijn geen processen aangetroffen die direct wijzen op PLC-engineeringsoftware, remote access software of andere tooling die direct in verband gebracht kan worden met de PLC-aanval. Deze bevinding komt overeen met de conclusie van de oorspronkelijke onderzoeksgroep.
+De proceslijst te zien in @pslist, bevat voornamelijk standaard Windows-processen, Microsoft Edge, OneDrive, VMware Tools en Microsoft Defender. Er zijn geen processen aangetroffen die direct wijzen op PLC-engineeringsoftware, remote access software of andere tooling die direct in verband gebracht kan worden met de PLC-aanval. Deze bevinding komt overeen met de conclusie van de oorspronkelijke onderzoeksgroep.
+
+#figure(
+image("/assets/image-22-desktopdump.png", width: 60%),
+caption: "Output van Volatility3's windows.pslist plugin"
+)<pslist>
+
 == Extra controle met psscan
-De aanvullende analyse met de psscan-plugin leverde geen afwijkende of verborgen processen op ten opzichte van de resultaten van pslist. Hiermee wordt de conclusie van de oorspronkelijke onderzoeksgroep verder ondersteund.
+De aanvullende analyse met de psscan-plugin weergegeven in @psscan leverde geen afwijkende of verborgen processen op ten opzichte van de resultaten van pslist. Hiermee wordt de conclusie van de oorspronkelijke onderzoeksgroep verder ondersteund.
+
+#figure(
+image("/assets/image-23-desktopdump.png", width: 60%),
+caption: "Output van Volatility3's windows.psscan plugin"
+)<psscan>
 == Validatie netwerkverbindingen
 Tijdens de reproductie van de netscan-analyse werden meer externe IP-adressen aangetroffen dan in het oorspronkelijke verslag zijn opgenomen. Validatie met WHOIS/ASN-attributie toont aan dat deze adressen behoren tot Microsoft Azure, Microsoft 365 en Google-infrastructuur. Er zijn geen aanwijzingen gevonden dat deze verbindingen direct gerelateerd zijn aan de onderzochte PLC-aanval. De aanvullende IP-adressen wijzigen de conclusies van het oorspronkelijke onderzoek daarom niet.
 #figure(
@@ -56,11 +67,40 @@ Tijdens de reproductie van de netscan-analyse werden meer externe IP-adressen aa
   caption: [Externe IP-adressen aangetroffen tijdens netscan-analyse en bijbehorende organisaties.],
 )
 == Registry
-De oorspronkelijke onderzoeksgroep concludeert dat de registry waarschijnlijk niet aanwezig was in de memory dump. Tijdens de validatie is de plugin windows.registry.hivelist uitgevoerd. Hieruit blijkt dat meerdere registry hives aanwezig zijn in de memory dump, waaronder SYSTEM, SOFTWARE, SAM, SECURITY en de gebruikershive van gebruiker krist. De conclusie dat de registry niet aanwezig was in de memory dump wordt daarom niet ondersteund door de resultaten van de validatie.
+De oorspronkelijke onderzoeksgroep concludeert dat de registry waarschijnlijk niet aanwezig was in de memory dump. Tijdens de validatie is de plugin `windows.registry.hivelist` uitgevoerd. Hieruit blijkt dat meerdere registry hives aanwezig zijn in de memory dump, waaronder `SYSTEM`, `SOFTWARE`, `SAM`, `SECURITY` en de gebruikershive van gebruiker krist. De conclusie dat de registry niet aanwezig was in de memory dump wordt daarom niet ondersteund door de resultaten van de validatie.
+
+#figure(
+image("/assets/image-24-desktopdump.png", width: 100%),
+caption: "Output van Volatility3's windows.registry.hivelist plugin"
+)<hive>
 
 == Filescan
 Tijdens de filescan-analyse zijn geen bestanden aangetroffen die direct wijzen op de aanwezigheid van Schneider EcoStruxure, Machine Expert of andere PLC-gerelateerde software. Deze bevinding ondersteunt de conclusie van de oorspronkelijke onderzoeksgroep.
 == Strings
-Tijdens de analyse werden meerdere PLC-gerelateerde strings aangetroffen, waaronder verwijzingen naar Modbus, EcoStruxure Machine Expert en Tricon/TriStation. Na verder onderzoek van de context waarin deze strings voorkwamen wijst erop dat deze waarschijnlijk afkomstig zijn uit Microsoft Defender-signatures en niet uit daadwerkelijk uitgevoerde PLC-software. De aangetroffen strings vormen daarom geen sterk bewijs voor PLC-manipulatie.
+De ruwe memorydump is omgezet naar een strings.txt bestand, en hier is gegrept op termen die eventueel nuttige informatie kunnen extraheren gerelateerd aan het onderzoek.
+```bash
+grep -i -E "schneider|ecostruxure|machine expert|modbus" strings.txt
+```
+Tijdens de analyse werden meerdere PLC-gerelateerde strings aangetroffen:
+#figure(
+  ```json
+  {"helps":[{"id":"yzq01c5g1rDRs_Lflg2ggw","ver":"V2.1","lng":"en","ttl":"PLCopen Safety Function Blocks","n":"SF_PrefaceSafety","bc":[{"id":"Fya5GQLY7ul57KsswMNICQ","n":"VLP_PLCOpen","ttl":"PLCopen Safety Function Blocks Library"},{"id":"SACgLqMU9gqYoWdyQNxTmQ","n":"VLP_SoSafe","ttl":"EcoStruxure Machine Expert - Safety"},{"id":"IAUhz70yDliIZsV2lwUtNw","n":"VLP_Safety","ttl":"EcoStruxure Machine Expert - Safety"},{"id":"RkN_cuO-L1Cqr1BwRxzTtg","n":"V2.1","ttl":"V2.1"},{"id":"_6iawEiBfGt5TJm-GCGLkg","n":"Machine Expert","ttl":"Machine Expert"}]}],"groups":[]}
+  ```,
+  caption: "Verwijzing naar Machine Expert documentatie betreft veiligheid"
+)
+
+#figure(
+  ```
+  prog_cntTsBase.py.TsBase(TsHi.pykeystateGetProjectInfoGetProgramTableSafeAppendProgramMod. TsHi(TsLow.pyprint_last_error.TsLow( TCM foundCRC16_MODBUSKotov AlaxanderCRC_CCITT_XMODEMcrc16retCRC16_CCITTsh.pyc FAILUREsymbol tableinject.binimain.bin
+  ```,
+caption: "Verwijzing in MODBUS"
+)<verwijzing_modbus>
+
+in @verwijzing_modbus staan eventueel interessante termen, zoals `GetProjectInfo` en `GetProgramTable`. Deze kunnen eventueel betrekking hebben tot projectbestanden van een PLC.
+#linebreak()
+Na het uitvoeren van ```bash grep -i -C 100 -E "GetProjectInfo" strings.txt```
+
+
+Na verder onderzoek van de context waarin deze strings voorkwamen wijst erop dat deze waarschijnlijk afkomstig zijn uit Microsoft Defender-signatures en niet uit daadwerkelijk uitgevoerde PLC-software. De aangetroffen strings vormen daarom geen sterk bewijs voor PLC-manipulatie.
 == Conclusie
 De analyse van de desktop memory dump bleek grotendeels reproduceerbaar. Tijdens de validatie werden enkele aanvullende artefacten aangetroffen, waaronder de exacte Windows-versie en aanvullende externe IP-adressen. Deze aanvullende bevindingen hebben alleen geen invloed op de conclusies van het oorspronkelijke onderzoek. Er zijn geen aanwijzingen gevonden voor actieve PLC-bewerksoftware, PLC-projectbestanden of netwerkverbindingen die direct gerelateerd kunnen worden aan de aanval. De oorspronkelijke conclusie dat de memory dump beperkte forensische waarde heeft voor het reconstrueren van de aanval wordt daarmee ondersteund.
