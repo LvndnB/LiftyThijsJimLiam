@@ -370,11 +370,7 @@ Deze bevindingen komen sterk overeen met die uit de PCAP-analyse (hoofdstuk 4). 
 
 #pagebreak()
 
-*DV7* wordt beantwoord: de bevindingen uit het oorspronkelijke onderzoeksverslag van MCElevatorFace zijn grotendeels reproduceerbaar. De memory dump-analyse bevestigt de conclusies van de eerdere onderzoeksgroep, maar voegt ook nieuwe bevindingen toe die in het oorspronkelijke verslag niet zijn opgenomen. De analyse van de OnChipRAM-dumps levert aanvullende aanwijzingen op over de herkomst van de aanval en de aanwezigheid van de wijzigingen in het geheugen van de PLC.
-
-#linebreak()
-== Beoordeling PLC memorydump analyse McElevatorFace
-
+*DV7* wordt beantwoord: 
 Het onderzoeksteam van McElevatorFace is het onderzoek met een systematische basisaanpak gestart. Binwalk is ingezet voor het detecteren van embedded bestanden in de ExtRAM-dumps, er is een differentiële analyse uitgevoerd op de ziparchieven, en de bevindingen zijn gekoppeld aan de netwerkdata. Dit zijn goede stappen geweest in het zoeken naar de oorzaak van het incident.
 
 Hoewel McElevatorFace gedeeltelijk dezelfde aanpak heeft gekozen om de dumps te analyseren, zijn veel stappen kort (of niet) beschreven. Daarnaast wordt vermeld dat "delen zijn verwijderd, vervangen en aangepast". Niet alle relevante wijzigingen worden concreet beschreven, terwijl deze cruciale bevindingen vormen. Zo missen de manipulatie van timer0, de toevoeging van timer2 en timer3, de toevoeging van extra rungs in een POU én de verwijdering en het latere herstel van het SAME_CALL memory bit.

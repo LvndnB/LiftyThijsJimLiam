@@ -10,6 +10,13 @@ Mijn forensische ontwikkeling zat vooral in het controleren van mijn werk. In ee
 Mijn zwakke punt is dat ik mijn keuzes niet altijd goed vastlegde. Mijn werk klopte wel, maar voor een teamgenoot was niet altijd te volgen waarom ik iets op een bepaalde manier had gedaan. Voor forensisch werk is dat belangrijk, want een ander moet mijn stappen kunnen herhalen. Daarom ben ik dus beter gaan letten op het documenteren van mijn proces in het logboek zodat het beter reproduceerbaar is.
 
 == Thijs van der Zwan
+In dit project heb ik me vooral gericht op het analyseren van de PLC memory dumps. Hoewel ik al ervaring had met het programmeren van PLC's, was het analyseren van RAM dumps nieuw voor mij. Ik heb daarom eerst veel tijd besteed aan het onderzoeken van de technische inhoud, de structuur en de functie van de data in het RAM-geheugen van een PLC. Ook heb ik me verdiept in relevante tools, om de dumps te kunnen analyseren en de inhoud te kunnen interpreteren en vergelijken. Vooraf wist ik niet dat er zoveel interessante informatie te vinden zou zijn in de dumps en dat er zoveel sporen te zien waren van manipulatieve handelingen.
+
+Mijn sterke punt in dit project was de kritische blik die ik heb toegepast op de memory analyse. Ik wilde een nauwkeurige vergelijking maken van de verschillende bestanden, om een sterker onderbouwde conclusie te kunnen vormen dan MCElevatorFace. Zo heb ik alle gevonden wijzigingen overzichtelijk in beeld gebracht en toegelicht. Dit heeft geleid tot een beter inzicht in de impact van de wijzigingen en de oorzaak van het incident.
+
+Een verbeterpunt is dat ik moet aanleren om altijd in mijn onderzoeksomgeving te werken. Terwijl ik voorkennis aan het opdoen was over RAM-geheugen in PLC's liep ik soms te hard van stapel en wilde ik meteen een bestand analyseren, zonder de juiste voorbereidende stappen te nemen. Hierdoor ben ik extra tijd kwijt geraakt aan het opnieuw uitvoeren van sommige stappen, omdat ik deze eerder niet of onvoldoende had gedocumenteerd tijdens het proces.
+
+#pagebreak()
 
 == Jim van Dijk
 Tijdens dit project heb ik ervaring opgedaan met het valideren van digitaal forensisch onderzoek aan de hand van dezelfde bewijsstukken van een eerdere onderzoeksgroep. Hierbij heb ik analyses uitgevoerd op een desktop memory dump, netwerk captures bekeken en experimenten uitgevoerd met de PLC, om te kijken hoe bepaalde events er uit zagen in netwerkverkeer.
