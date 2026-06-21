@@ -274,4 +274,52 @@ TCPstreamZIPextractie/
 Elke `StreamX`-map komt overeen met één uploadmoment: `streamX.bin` is de ruwe TCP-stream, `extracted.zip` het daaruit gecarvede ZIP-archief en `extracted/entry` het uitgepakte metadatabestand dat voor de versievergelijking tussen de vier uploads is gebruikt.
 
 #pagebreak()
+= Entry's uit de ExtRAM-analyse <appendixD>
+
+Tijdens de analyse van het External RAM van de PLC is in alle zeven dumps een `ZIP-archief` aangetroffen. In deze ZIP-archieven was telkens één `entry`-bestand aanwezig. Dit zijn dus de entry-bestanden met de XML-metadata van het PLC-project dat op het moment van de dump op de PLC aanwezig was (zie het hoofdstuk over de PLC Memorydump-analyse).
+ 
+Deze zeven `entry`-bestanden zijn in het portfolio aanwezig in de map `ExtRAMextractie`, met de volgende structuur:
+ 
+```
+ExtRAMextractie/
+├── Dump1/
+│   ├── ExtRAM1.bin
+│   ├── OnChipRAM1.bin
+│   ├── entry1
+│   └── extracted_1.zip
+├── Dump2/
+│   ├── ExtRAM2.bin
+│   ├── OnChipRAM2.bin
+│   ├── entry2
+│   └── extracted_2.zip
+├── Dump3/
+│   ├── ExtRAM3.bin
+│   ├── OnChipRAM3.bin
+│   ├── entry3
+│   └── extracted_3.zip
+├── Dump4/
+│   ├── ExtRAM4.bin
+│   ├── OnChipRAM4.bin
+│   ├── entry4
+│   └── extracted_4.zip
+├── Dump5/
+│   ├── ExtRAM5.bin
+│   ├── OnChipRAM5.bin
+│   ├── entry5
+│   └── extracted_5.zip
+├── Dump6/
+│   ├── ExtRAM6.bin
+│   ├── OnChipRAM6.bin
+│   ├── entry6
+│   └── extracted_6.zip
+└── Dump7/
+    ├── ExtRAM7.bin
+    ├── OnChipRAM7.bin
+    ├── entry7
+    └── extracted_7.zip
+```
+ 
+Elke `DumpX`-map komt overeen met één dumpmoment en bevat de volgende bestanden:  `ExtRAMX.bin` en `OnChipRAMX.bin` zijn de originele dump-bestanden. Hier zijn de ZIP-archieven `extracted_X.zip` uit gecarved, en `entryX` is het uitgepakte metadatabestand dat voor de versievergelijking tussen de zeven dumps is gebruikt.
+
+#pagebreak()
 #bibliography("bronnen.bib", style:"american-political-science-association")
