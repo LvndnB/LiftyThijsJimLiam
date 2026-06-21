@@ -48,6 +48,8 @@
 #pagebreak()
 #include "desktopdump.typ"
 #pagebreak()
+#include "cctv.typ"
+#pagebreak()
 #include "conclusie.typ"
 #pagebreak()
 #counter(heading).update(0)
@@ -57,7 +59,7 @@
 Hieronder volgt de aangepaste plugin gebaseerd op de plugin van #cite(<bierocorridor_umasplugin>):
 
 
-```
+```lua
 --[[
     lua wireshark addon for the UMAS embeded modbus protocol 
     made by biero-el-corridor
@@ -197,7 +199,7 @@ modbus:add(502, modbus1_protocol)
 Python script: `extract_zips.py`:
 
 
-```
+```py
 import struct, sys
 
 # Lees het stream bestand
