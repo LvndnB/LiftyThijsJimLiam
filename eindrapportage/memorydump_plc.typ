@@ -110,7 +110,9 @@ In het entry-bestand is - net als in de pcap analyse - metadata van het PLC-prog
 
 == Vergelijking entry-bestanden
 
-Nu er belangrijke data omtrent het functioneren van de PLC is aangetroffen in de memory dump en bekend is dat de inhoud van dit bestand meermaals is veranderd, zijn alle 7 entry-bestanden uit de ExtRAM-dumps geëxtraheerd en is de inhoud hiervan met elkaar vergeleken. Er zijn 4 unieke versies van het entry-bestand gevonden (zie @tabel2).
+Nu er belangrijke data omtrent het functioneren van de PLC is aangetroffen in de memory dump en bekend is dat de inhoud van dit bestand meermaals is veranderd, zijn alle 7 entry-bestanden uit de ExtRAM-dumps geëxtraheerd en is de inhoud hiervan met elkaar vergeleken (zie #ref(<appendixD>) voor de gebruikte mappen- en bestandenstructuur). 
+
+Er zijn 4 unieke versies van het entry-bestand gevonden (zie @tabel2).
 
 #figure(
   table(
@@ -366,10 +368,11 @@ Deze bevindingen komen sterk overeen met die uit de PCAP-analyse (hoofdstuk 4). 
 
 *DV4* wordt beantwoord: op het moment van de dumps bevond de PLC zich in een toestand waarin kritieke timinglogica (timer0, plus twee onbekende extra timers) was aangepast en extra ladder-logica was toegevoegd aan de aansturing van de lift. Dit kan direct invloed hebben gehad op het liftgedrag, al kan op basis van de metadata alleen niet worden vastgesteld wat het exacte functionele effect was.
 
-
-
 #pagebreak()
 
+*DV7* wordt beantwoord: de bevindingen uit het oorspronkelijke onderzoeksverslag van MCElevatorFace zijn grotendeels reproduceerbaar. De memory dump-analyse bevestigt de conclusies van de eerdere onderzoeksgroep, maar voegt ook nieuwe bevindingen toe die in het oorspronkelijke verslag niet zijn opgenomen. De analyse van de OnChipRAM-dumps levert aanvullende aanwijzingen op over de herkomst van de aanval en de aanwezigheid van de wijzigingen in het geheugen van de PLC.
+
+#linebreak()
 == Beoordeling PLC memorydump analyse McElevatorFace
 
 Het onderzoeksteam van McElevatorFace is het onderzoek met een systematische basisaanpak gestart. Binwalk is ingezet voor het detecteren van embedded bestanden in de ExtRAM-dumps, er is een differentiële analyse uitgevoerd op de ziparchieven, en de bevindingen zijn gekoppeld aan de netwerkdata. Dit zijn goede stappen geweest in het zoeken naar de oorzaak van het incident.
