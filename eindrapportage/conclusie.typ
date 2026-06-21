@@ -9,3 +9,11 @@ De kernbevindingen van McElevatorface zijn hiermee langs bevestigd, maar hun rap
 
 Daarmee is ook de hoofdvraag beantwoord: de conclusies van McElevatorface zijn in de basis reproduceerbaar, maar onvolledig onderbouwd en op de belangrijkste vraag te terughoudend. Het bewijs versterkt de conclusie dat er zeer waarschijnlijk een gerichte aanval op de lift heeft plaatsgevonden. 
 
+#pagebreak()
+== Afweging van de hypotheses en scenario's
+ 
+Van de opgestelde hypotheses wordt hypothese 3 - sabotage op afstand via het netwerk - het sterkst ondersteund. Een ondersteunend argument hiervoor is dat een technische of softwarefout zonder menselijke invloed (hypothese 1) onwaarschijnlijk is, omdat het stoppen en overschrijven van het programma bewuste handelingen waren. Daarnaast is een externe oorzaak als een stroomstoring (hypothese 4) niet passend, omdat dit een ander, herkenbaar spoor achterlaat dan hier is gevonden. Fysieke, menselijke invloed (hypothese 2) is op de camerabeelden niet zichtbaar en is daarmee ook onwaarschijnlijk.
+ 
+Van de scenario's is scenario 3 - een medewerker met netwerktoegang die het programma heeft overschreven - de best onderbouwde verklaring en direct te herleiden tot Employee-01. De scenario's 8 en 9 worden gedeeltelijk ondersteund: de manipulatie was kwaadwillig en trof Kristi, maar een motief is niet vast te stellen en van losse schadelijke software is geen bewijs gevonden. Er is geen bewijs voor de andere scenario's, zoals een spontane storing, stroomuitval, fysieke manipulatie, verkeerd gebruik of achterstallig onderhoud.
+ 
+De liftstoring is dus met grote waarschijnlijkheid het gevolg van een gerichte manipulatie van het PLC-programma op afstand, uitgevoerd vanaf het werkstation van Employee-01, met `attaxk` en de naam `SAFE Lab Mafia` als signatuur.
