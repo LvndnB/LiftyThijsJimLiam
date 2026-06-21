@@ -6,10 +6,10 @@ De volgende deelvragen uit het Plan van Aanpak zijn leidend voor dit hoofdstuk:
 - *DV7* In hoeverre zijn de bevindingen uit het rapport reproduceerbaar a.d.h.v. onafhankelijk analyse met dezelfde bewijsstukken?
 
 Deze deelvragen worden beantwoord aan de hand van de volgende onderzoeksvragen, die in de analyse verder worden uitgewerkt:
--
--
--
--
+- Welke processen waren actief op het systeem ten tijde van de memory dump?
+- Welke netwerkverbindingen waren aanwezig op het systeem?
+- Zijn er aanwijzingen voor PLC-gerelateerde software, bestanden of artefacten?
+- In hoeverre ondersteunen de aangetroffen artefacten de conclusies van de oorspronkelijke onderzoeksgroep?
 
 Voor dit onderdeel is de analyse van de desktop memory dump door de eerdere projectgroep opnieuw uitgevoerd. Het doel is om vast te stellen of de gebruikte methode reproduceerbaar is en of de getrokken conclusies worden ondersteund door de beschikbare artefacten.
 
@@ -103,4 +103,16 @@ Na het uitvoeren van ```bash grep -i -C 100 -E "GetProjectInfo" strings.txt```
 
 Na verder onderzoek van de context waarin deze strings voorkwamen wijst erop dat deze waarschijnlijk afkomstig zijn uit Microsoft Defender-signatures en niet uit daadwerkelijk uitgevoerde PLC-software. De aangetroffen strings vormen daarom geen sterk bewijs voor PLC-manipulatie.
 == Conclusie
-De analyse van de desktop memory dump bleek grotendeels reproduceerbaar. Tijdens de validatie werden enkele aanvullende artefacten aangetroffen, waaronder de exacte Windows-versie en aanvullende externe IP-adressen. Deze aanvullende bevindingen hebben alleen geen invloed op de conclusies van het oorspronkelijke onderzoek. Er zijn geen aanwijzingen gevonden voor actieve PLC-bewerksoftware, PLC-projectbestanden of netwerkverbindingen die direct gerelateerd kunnen worden aan de aanval. De oorspronkelijke conclusie dat de memory dump beperkte forensische waarde heeft voor het reconstrueren van de aanval wordt daarmee ondersteund.
+De analyse van de desktop memory dump bleek grotendeels reproduceerbaar. Tijdens de validatie werden enkele aanvullende artefacten aangetroffen, waaronder de exacte Windows versie, aanwezige registry hives en aanvullende externe IP-adressen. Deze bevindingen hebben echter geen invloed op de conclusies van het oorspronkelijke onderzoek.
+
+*DV5: Welk verband is er aantoonbaar tussen de activiteit op de desktop van Kristi en het lift-incident?*
+
+Op basis van de uitgevoerde analyse is geen direct verband aangetoond tussen activiteiten op de desktop van Kristi en het lift-incident. Er zijn geen processen, bestanden of netwerkverbindingen aangetroffen die direct gekoppeld kunnen worden aan manipulatie van de PLC of het veroorzaken van de storing.
+
+*DV6: Welke rol heeft de software op Kristi's computer gespeeld bij het lift-incident?*
+
+Tijdens de analyse zijn geen aanwijzingen gevonden voor actieve PLC-engineeringsoftware, PLC-projectbestanden of andere software die direct gebruikt lijkt te zijn voor het aanpassen van de PLC. De aangetroffen PLC-gerelateerde strings blijken waarschijnlijk afkomstig uit Microsoft Defender-signatures en vormen daarom geen sterk bewijs voor daadwerkelijke PLC-activiteiten.
+
+*DV7: In hoeverre zijn de bevindingen uit het rapport reproduceerbaar aan de hand van onafhankelijk onderzoek met dezelfde bewijsstukken?*
+
+De meeste bevindingen uit het oorspronkelijke onderzoeksrapport konden worden gereproduceerd. Daarnaast zijn enkele aanvullende artefacten aangetroffen die niet in het oorspronkelijke rapport zijn beschreven. Deze aanvullende bevindingen wijzigen de oorspronkelijke conclusies echter niet. De conclusie dat de desktop memory dump beperkte forensische waarde heeft voor het reconstrueren van de aanval wordt daarmee ondersteund.
