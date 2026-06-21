@@ -52,6 +52,8 @@
 #pagebreak()
 #include "conclusie.typ"
 #pagebreak()
+#include "reflectie.typ"
+#pagebreak()
 #counter(heading).update(0)
 #set heading(numbering: "A.", supplement: [Bijlage])
 
