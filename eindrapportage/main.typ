@@ -1,3 +1,5 @@
+#import "voorblad.typ": title
+
 #show heading.where(level: 1): set text(size: 20pt)
 #show heading.where(level: 2): set text(size: 16pt)
 #show heading.where(level: 3): set text(size: 14pt)
