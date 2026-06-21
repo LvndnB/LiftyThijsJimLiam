@@ -41,6 +41,7 @@ Om 01:06:44 wordt de liftdeur geopend vanaf de buitenzijde en verlaat Kristi de 
   caption: [Activiteiten lift.],
 )
 
+#pagebreak()
 == Analyse
 De beelden bevestigen dat Kristi gedurende langere tijd opgesloten heeft gezeten in de lift. Nadat de lift opnieuw in beweging komt, vertoont deze afwijkend gedrag doordat de deuren herhaaldelijk openen terwijl de lift zich tussen verdiepingen verplaatst.
 

@@ -43,7 +43,7 @@ caption: "[Desktopdump-2] Output van Volatility3's windows.pslist plugin"
 De aanvullende analyse met de psscan-plugin weergegeven in @psscan leverde geen afwijkende of verborgen processen op ten opzichte van de resultaten van pslist. Hiermee wordt de conclusie van de oorspronkelijke onderzoeksgroep verder ondersteund.
 
 #figure(
-image("/assets/image-23-desktopdump.png", width: 60%),
+image("/assets/image-23-desktopdump.png", width: 55%),
 caption: "[Desktopdump-2] Output van Volatility3's windows.psscan plugin"
 )<psscan>
 == Validatie netwerkverbindingen
@@ -67,14 +67,14 @@ Tijdens de reproductie van de netscan-analyse werden meer externe IP-adressen aa
   caption: [[Desktopdump-3] Externe IP-adressen aangetroffen tijdens netscan-analyse en bijbehorende organisaties.],
 )
 == Registry
-De oorspronkelijke onderzoeksgroep concludeert dat de registry waarschijnlijk niet aanwezig was in de memory dump. Tijdens de validatie is de plugin `windows.registry.hivelist` uitgevoerd. Hieruit blijkt dat meerdere registry hives aanwezig zijn in de memory dump, waaronder `SYSTEM`, `SOFTWARE`, `SAM`, `SECURITY` en de gebruikershive van gebruiker krist. De conclusie dat de registry niet aanwezig was in de memory dump wordt daarom niet ondersteund door de resultaten van de validatie.
+De oorspronkelijke onderzoeksgroep concludeert dat de registry waarschijnlijk niet aanwezig was in de memory dump. Tijdens de validatie is de plugin `windows.registry.hivelist` uitgevoerd. Hieruit blijkt dat meerdere registry hives aanwezig zijn in de memory dump, waaronder `SYSTEM`, `SOFTWARE`, `SAM`, `SECURITY` en de gebruikershive van gebruiker 'krist'. De conclusie dat de registry niet aanwezig was in de memory dump wordt daarom niet ondersteund door de resultaten van de validatie.
 
 #figure(
 image("/assets/image-24-desktopdump.png", width: 100%),
-caption: "[Desktopdump-3
-4] Output van Volatility3's windows.registry.hivelist plugin"
+caption: "[Desktopdump-4] Output van Volatility3's windows.registry.hivelist plugin"
 )<hive>
 
+#pagebreak()
 == Filescan
 Tijdens de filescan-analyse zijn geen bestanden aangetroffen die direct wijzen op de aanwezigheid van Schneider EcoStruxure, Machine Expert of andere PLC-gerelateerde software. Deze bevinding ondersteunt de conclusie van de oorspronkelijke onderzoeksgroep.
 == Strings
@@ -103,6 +103,8 @@ Na het uitvoeren van ```bash grep -i -C 100 -E "GetProjectInfo" strings.txt```
 
 
 Na verder onderzoek van de context waarin deze strings voorkwamen wijst erop dat deze waarschijnlijk afkomstig zijn uit Microsoft Defender-signatures en niet uit daadwerkelijk uitgevoerde PLC-software. De aangetroffen strings vormen daarom geen sterk bewijs voor PLC-manipulatie.
+
+#pagebreak()
 == Conclusie
 De analyse van de desktop memory dump bleek grotendeels reproduceerbaar. Tijdens de validatie werden enkele aanvullende artefacten aangetroffen, waaronder de exacte Windows versie, aanwezige registry hives en aanvullende externe IP-adressen. Deze bevindingen hebben echter geen invloed op de conclusies van het oorspronkelijke onderzoek.
 
