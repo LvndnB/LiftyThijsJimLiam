@@ -17,12 +17,15 @@ Deze deelvragen worden beantwoord aan de hand van de volgende onderzoeksvragen, 
 
 Als bewijsstuk is een netwerk dump aangeleverd: het bestand `142728_162728.pcapng`. Dit bestand bevat al het netwerkverkeer dat is vastgelegd op het netwerk van de bank, waaraan ook de PLC van de lift is gekoppeld. De bestandsnaam suggereert een opname van 14:27:28 tot 16:27:28, maar de tijdstempels in de pcap zelf tonen een starttijd van 20:27:28 op 29 juni 2023. Het verschil van zes uur wijst op een tijdzoneverschil tussen het opname-apparaat en de weergave in Wireshark; de tijdstempels zoals zichtbaar in Wireshark zijn leidend in dit onderzoek. Het bestand is omgezet naar het `.pcap`-formaat zodat het ingeladen kan worden in aanvullende analyse-omgevingen.
 
-#grid(
-  columns: 2,
-  gutter: 10pt,
-  align: center,
-  image("/assets/image-2.png"),
-  image("/assets/image-3.png")
+#figure(
+  grid(
+    columns: 2,
+    gutter: 10pt,
+    align: center,
+    image("/assets/image-2.png"),
+    image("/assets/image-3.png")
+  ),
+  caption: [`142728_162728.pcapng` geopend in Wireshark]
 )
 
 Voor de analyse zijn twee tools ingezet: Wireshark en NetworkMiner. Wireshark is gebruikt als primaire tool voor het inspecteren van individuele pakketten, het toepassen van displayfilters en het volgen van TCP-streams. NetworkMiner is ingezet voor een eerste screening op afwijkingen in het netwerk. Daarnaast is een zelf geschreven Python-script (#ref(<appendixB>) `extract_zips.py`) gebruikt om ZIP-archieven te extraheren vanuit de TCP-streams.
@@ -44,14 +47,20 @@ Het pcap-bestand is ingeladen in NetworkMiner 1.6.1. Via het tabblad _Hosts_, ge
 
 Daarnaast zijn onder meer `192.168.10.121` (Ubuntu/Linux), `192.168.10.130` (`EGR-AHMED-08`, Windows), `192.168.10.110` en `192.168.10.242` zichtbaar, maar deze zijn niet primair betrokken bij de verdachte activiteit.
 
-#image("/assets/image-4.png")
+#figure(
+  image("/assets/image-4.png"),
+  caption: [NetworkMiner — tabblad Hosts, gesorteerd op verzonden pakketten.]
+)
 
 In het tabblad _Anomalies_ is daarnaast een mogelijke ARP-spoofing-aanval gedetecteerd gericht op `192.168.10.101`. Dit wordt verderop in dit hoofdstuk verder toegelicht.
 
 === Identificatie via Wireshark Conversations
 Via _Statistics → Conversations → IPv4_ is het netwerkverkeer gesorteerd op volume. Hieruit blijkt dat de meest opvallende datatransactie plaatsvond tussen `192.168.10.164` (DESKTOP-RSRBUGJ, Employee-01) en `192.168.10.45` (PLC). Deze verbinding is verdacht omdat een gewone medewerker geen functionele reden heeft om directe Modbus/TCP-communicatie te voeren met de PLC. MCElevatorface identificeerde dezelfde verbinding als meest verdacht.
 
-#image("/assets/image-6.png")
+#figure(
+  image("/assets/image-6.png"),
+  caption: [Wireshark — Conversations → IPv4, gesorteerd op datavolume.]
+)
 
 #pagebreak()
 
@@ -68,7 +77,10 @@ ip.src == 192.168.10.164 && modbus && !(modbus.func_code == 254) && !(modbus.fun
 
 Dit filter toont uitsluitend het uitgaande Modbus-verkeer van Employee-01. De uitgesloten codes zijn decimaal 254 (0xFE – standaard response-bevestiging) en decimaal 36 (0x24 – READ\_COILS\_REGISTERS, reguliere polling). Wat overblijft zijn de relevante UMAS-interacties.
 
-#image("/assets/image-7.png")
+#figure(
+  image("/assets/image-7.png"),
+  caption: [Wireshark — displayfilter op uitgaand Modbus-verkeer van `192.168.10.164`.]
+)
 
 === Geïdentificeerde functiecodes
 Op basis van de gefilterde pakketlijst en de UMAS Wireshark-plugin zijn de volgende functiecodes aangetroffen in de sessies van Employee-01. De codes worden hier weergegeven als decimale waarde en de hexadecimale waarde(0x-notatie):
@@ -107,8 +119,15 @@ Per stream is via _Follow → TCP Stream_ de ruwe binaire data geëxporteerd als
 ```
 De byte `5A` (decimaal 90) markeert het begin van het UMAS-gedeelte; de Wireshark-plugin gebruikt dit als herkenningspunt. De UMAS-payload heeft een variabele lengte en bevat naast de ZIP ook de gecompileerde applicatiecode en configuratiedata. Het extractiescript slaat per frame de eerste 16 bytes (Modbus MBAP-header inclusief UMAS-prefix) over en verzamelt uitsluitend de payloadbytes. Binnen de aaneengesloten payload zoekt het script vervolgens naar de ZIP-bestandssignatuur `50 4B 03 04` (PKWARE Local File Header) als startpunt en `50 4B 05 06` (End of Central Directory) als eindpunt. De data vóór en na de ZIP bestaat uit de binaire applicatiecode en configuratieblokken; deze zijn niet verder geanalyseerd omdat ze geen leesbare structuur hebben zonder de bijbehorende Schneider compiler of een geschikte disassembler.
 
-#image("/assets/image-8.png")
-#image("/assets/image-9.png")
+#figure(
+  image("/assets/image-8.png"),
+  caption: [Wireshark — filter `UMAS.Umas_Functions_Code == 41`.]
+)
+
+#figure(
+  image("/assets/image-9.png"),
+  caption: [Wireshark — ZIP-signatuur `50 4B 03 04` zichtbaar in de pakketpayload van packet no. 236.]
+)
 
 MCElevatorface constateerde via de PLC-memorydump dat er een ZIP-bestand in het geheugen aanwezig was en traceerde dit terug naar het netwerkverkeer bij pakket 46884. In dit onderzoek zijn alle vier de downloadstreams systematisch geëxtraheerd als volledige, werkende ZIP-archieven, waardoor een directe versievergelijking van het PLC-programma per uploadsessie mogelijk is.
 
@@ -121,7 +140,10 @@ De vier `entry`-bestanden zijn onderling vergeleken. De resultaten zijn als volg
 *Stream1 – originele configuratie (49.417 bytes, 1.408 regels):* Het bestand bevat het ongewijzigde PLC-programma. De projectnaam is `New Project` (regel 1384). Een variabele op geheugenadres %M60 heeft op regel 171 symbool `SAME_CALL` met comment `SameFloorCall`. Een timer is ingesteld op een preset van 10 seconden (base: OneSecond).
 
 *Stream2 – gemanipuleerde versie (49.888 bytes, 1.428 regels):* Dit bestand wijkt significant af van Stream 1; de vergelijking toont 895 afwijkende regels, beginnend vanaf regel 169. De meest opvallende wijziging staat op regel 171: de variabele `SAME_CALL` is vervangen door een variabele op adresindex 35 zonder symboolnaam maar met de comment `attaxk`. Tevens zijn de timerwaarden gewijzigd: de preset is aangepast naar 5.000 milliseconden (base: OneMilliSeconds) voor meerdere timers. De projectnaam is in deze versie gewijzigd naar `SAFE Lab Mafia` (regel 1404). Dit is de enige versie waarin de comment `attaxk` aanwezig is.
-#image("/assets/image-10.png") //Stream1 vs Stream2
+#figure(
+  image("/assets/image-10.png"),
+  caption: [`entry` Stream 1 vs Stream 2.]
+)//Stream1 vs Stream2
 
 *Stream3 – tussenversie (49.144 bytes, 1.397 regels):* Dit is het kleinste bestand van de vier. De variabele `SAME_CALL` en bijbehorende comment ontbreken. De projectnaam is ook in deze versie `SAFE Lab Mafia` (regel 1373). De timerwaarden en structuur wijken nog steeds af van Stream 1.
 

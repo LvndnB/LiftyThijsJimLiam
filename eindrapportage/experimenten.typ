@@ -16,15 +16,21 @@ _PCAP: `login and logout PLC.pcapng`_
 
 Dit experiment hoort bij hypothese 3 en scenario 3: inloggen is de voorwaarde voor manipulatie op afstand, omdat een client pas na het claimen van de PLC wijzigingen kan wegschrijven. Het sluit aan op de in het Plan van Aanpak benoemde validatie van functiecode 10 (TAKE\_PLC\_RESERVATION). Vanaf de PC is een sessie geopend en weer afgesloten: de opname begint met `INIT_COMM`, waarna de PC het eigenaarschap claimt met `TAKE_PLC_RESERVATION` (`0x10`, No. 14) en dit bij het uitloggen weer vrijgeeft met `RELEASE_PLC_RESERVATION` (`0x11`, No. 159). Beide handelingen zijn daarmee herkenbaar in het netwerk.
 
-#table(
-  columns: (auto, auto, auto, auto),
-  [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
-  [`0x01`], [1], [No. 10], [INIT\_COMM – initialiseren van een UMAS-communicatie],
-  [`0x10`], [16], [No. 14], [TAKE\_PLC\_RESERVATION – PLC claimen (inloggen)],
-  [`0x11`], [17], [No. 159], [RELEASE\_PLC\_RESERVATION – reservering vrijgeven (uitloggen)],
+#figure(
+  table(
+    columns: (auto, auto, auto, auto),
+    [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
+    [`0x01`], [1], [No. 10], [INIT\_COMM – initialiseren van een UMAS-communicatie],
+    [`0x10`], [16], [No. 14], [TAKE\_PLC\_RESERVATION – PLC claimen (inloggen)],
+    [`0x11`], [17], [No. 159], [RELEASE\_PLC\_RESERVATION – reservering vrijgeven (uitloggen)],
+  ),
+  caption: [UMAS-functiecodes bij in- en uitloggen (TP001).],
 )
 
-#image("/assets/image-11.png")
+#figure(
+  image("/assets/image-11.png"),
+  caption: [Wireshark-opname van het in- en uitloggen op de PLC (`0x10` en `0x11`).],
+)
 
 == Experiment 2 — Starten en stoppen van de PLC (TP002)
  
@@ -32,14 +38,20 @@ _PCAP: `start and stop PLC.pcapng`_
  
 Dit experiment hoort bij hypothese 3 en de scenario's 3 en 8. Een op de PLC aanwezig programma is gestart en gestopt. Bij het starten is op pakket No. 26 functiecode `0x40` (decimaal 64) aangetroffen en bij het stoppen op No. 135 functiecode `0x41` (decimaal 65); het eindoordeel in TP002 is geslaagd. Deze waarden bevestigen tevens dat de oorspronkelijke plugin-koppeling (decimaal 58/59) onjuist was en vormden de aanleiding voor de correctie. Doordat start en stop expliciete netwerkcommando's blijken, wordt een spontane technische- of firmwarefout zonder menselijke invloed als verklaring minder waarschijnlijk.
  
-#table(
-  columns: (auto, auto, auto, auto),
-  [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
-  [`0x40`], [64], [No. 26], [START\_PLC – het programma op de PLC starten],
-  [`0x41`], [65], [No. 135], [STOP\_PLC – het programma op de PLC stoppen],
+#figure(
+  table(
+    columns: (auto, auto, auto, auto),
+    [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
+    [`0x40`], [64], [No. 26], [START\_PLC – het programma op de PLC starten],
+    [`0x41`], [65], [No. 135], [STOP\_PLC – het programma op de PLC stoppen],
+  ),
+  caption: [UMAS-functiecodes bij het starten en stoppen van de PLC (TP002).],
 )
  
-#image("/assets/image-22.png")
+#figure(
+  image("/assets/image-22.png"),
+  caption: [Wireshark-opname van het starten en stoppen van de PLC (`0x40` en `0x41`).],
+)
 
 == Experiment 3 — Gewijzigd programma naar de PLC sturen (SEND) (TP003)
 
@@ -47,14 +59,20 @@ _PCAP: `send (ingelogd en in programmering tab, na het bewerken van programma).p
 
 Dit experiment hoort bij hypothese 3 en de scenario's 3 en 9 en sluit aan op het in het Plan van Aanpak benoemde experiment "aanpassing maken aan het programma". In Machine Expert is een kleine wijziging aangebracht (ingang `I0.0` naar `I0.2`) en via SEND naar de draaiende PLC geschreven. In de opname staan twee schrijf-functiecodes: `0x6d` (SEND 2 DOWNLOAD) op No. 33 en `0x29` (SEND 1 DOWNLOAD) op No. 35, zonder start/stop-commando. Het is dus aantoonbaar mogelijk een draaiend PLC-programma over het netwerk te overschrijven.
 
-#table(
-  columns: (auto, auto, auto, auto),
-  [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
-  [`0x6d`], [109], [No. 33], [SEND 2 DOWNLOAD – data naar de PLC schrijven (PC → PLC)],
-  [`0x29`], [41], [No. 35], [SEND 1 DOWNLOAD – data naar de PLC schrijven (PC → PLC)],
+#figure(
+  table(
+    columns: (auto, auto, auto, auto),
+    [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
+    [`0x6d`], [109], [No. 33], [SEND 2 DOWNLOAD – data naar de PLC schrijven (PC → PLC)],
+    [`0x29`], [41], [No. 35], [SEND 1 DOWNLOAD – data naar de PLC schrijven (PC → PLC)],
+  ),
+  caption: [UMAS-functiecodes bij het sturen van een wijziging via SEND (TP003).],
 )
 
-#image("/assets/image-23.png")
+#figure(
+  image("/assets/image-23.png"),
+  caption: [Wireshark-opname van de SEND-handeling naar de PLC (`0x6d` en `0x29`).],
+)
 
 == Experiment 4 — Project van PC naar PLC sturen (download) (TP004)
 
@@ -62,13 +80,20 @@ _PCAP: `PC to Controller (download).pcapng`_
 
 Dit experiment hoort bij hypothese 3 en scenario 3. Een volledig Machine Expert-project is vanaf de PC naar de PLC gestuurd (download); op pakket No. 42 is functiecode `0x36` (DOWNLOAD 1) aangetroffen. Waar SEND een wijziging in een draaiend programma wegschrijft, hoort `0x36` bij het overdragen van een compleet, en dus mogelijk gemanipuleerd, project naar de PLC.
 
-#table(
-  columns: (auto, auto, auto, auto),
-  [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
-  [`0x36`], [54], [No. 42], [DOWNLOAD 1 – volledig project van PC naar PLC (PC → PLC)],
+#figure(
+  table(
+    columns: (auto, auto, auto, auto),
+    [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
+    [`0x36`], [54], [No. 42], [DOWNLOAD 1 – volledig project van PC naar PLC (PC → PLC)],
+  ),
+  caption: [UMAS-functiecodes bij het sturen van een project via DOWNLOAD (TP004).],
 )
 
-#image("/assets/image-24.png")
+#figure(
+  image("/assets/image-24.png"),
+  caption: [Wireshark-opname van de download naar de PLC (`0x36`).],
+)
+
 
 == Experiment 5 — Programma van PLC naar PC kopiëren (upload) (TP005)
 
@@ -78,14 +103,20 @@ Dit experiment hoort bij hypothese 3 en de scenario's 3 en 9. Het actieve progra
 
 #pagebreak()
 
-#table(
-  columns: (auto, auto, auto, auto),
-  [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
-  [`0x28`], [40], [No. 59], [UPLOAD – programma van PLC naar PC (PLC → PC)],
-  [`0x72`], [114], [No. 192], [UPLOAD 2 – vervolg van de upload (PLC → PC)],
+#figure(
+  table(
+    columns: (auto, auto, auto, auto),
+    [*Functiecode*], [*Decimaal*], [*Pakket*], [*Betekenis*],
+    [`0x28`], [40], [No. 59], [UPLOAD – programma van PLC naar PC (PLC → PC)],
+    [`0x72`], [114], [No. 192], [UPLOAD 2 – vervolg van de upload (PLC → PC)],
+  ),
+  caption: [UMAS-functiecodes bij het uploaden van het programma van de PLC (TP005).],
 )
 
-#image("/assets/image-25.png")
+#figure(
+  image("/assets/image-25.png"),
+  caption: [Wireshark-opname van de upload van de PLC (`0x28` en `0x72`).],
+)
 
 == Experiment 6 — Knop aan lamp op de PLC (TP006)
 
@@ -95,7 +126,10 @@ In het netwerkverkeer is géén statuswijziging van de output zichtbaar en zijn 
 
 Dit is juist een waardevolle bevinding voor de koppeling aan het Plan van Aanpak: omdat fysieke bediening en lokale programmalogica geen sporen in het netwerk achterlaten, kunnen de oorzaken die buiten het netwerk liggen — een door een knopvolgorde getriggerde programmabug (hypothese 1, scenario 1), fysieke of menselijke bediening (hypothese 2, scenario 7) en fysieke manipulatie van knoppen of bekabeling (scenario 4) — niet via de casus-pcap worden aangetoond of uitgesloten. Voor die hypotheses en scenario's is ander bewijsmateriaal nodig, zoals de PLC-memorydump en de CCTV-beelden.
 
-#image("/assets/image-26.png")
+#figure(
+  image("/assets/image-26.png"),
+  caption: [Wireshark-opname van de knopdruk op de PLC.],
+)
 
 == Experiment 7 — Stroomonderbreking van de PLC (TP007)
 
@@ -109,18 +143,21 @@ Gekoppeld aan het Plan van Aanpak laat dit zien dat een externe factor (hypothes
 
 De experimenten leveren samen de volgende geverifieerde referentietabel op. Naast de hieronder genoemde codes bevatten de opnamen ook standaard sessie- en pollingverkeer (onder meer `0x01` INIT\_COMM, `0x04` READ\_PLC\_INFO, `0x24` READ\_COILS\_REGISTERS en de bevestiging `0xfe` Response OK); deze zijn niet handelingspecifiek en worden in de casus-analyse weggefilterd.
 
-#table(
-  columns: (auto, auto, auto, auto),
-  [*Code*], [*Dec.*], [*Handeling*], [*Geverifieerd in experiment*],
-  [`0x10`], [16], [Inloggen / PLC claimen], [Exp. 1 – login/logout (No. 14)],
-  [`0x11`], [17], [Uitloggen / reservering vrijgeven], [Exp. 1 – login/logout (No. 159)],
-  [`0x40`], [64], [PLC starten], [Exp. 2 – start/stop (No. 26)],
-  [`0x41`], [65], [PLC stoppen], [Exp. 2 – start/stop (No. 135)],
-  [`0x6d`], [109], [Wijziging wegschrijven (SEND 2)], [Exp. 3 – send (No. 33)],
-  [`0x29`], [41], [Wijziging wegschrijven (SEND 1)], [Exp. 3 – send (No. 35)],
-  [`0x36`], [54], [Volledig project downloaden (PC→PLC)], [Exp. 4 – download (No. 42)],
-  [`0x28`], [40], [Programma uploaden (PLC→PC)], [Exp. 5 – upload (No. 59)],
-  [`0x72`], [114], [Vervolg upload (PLC→PC)], [Exp. 5 – upload (No. 192)],
+#figure(
+  table(
+    columns: (auto, auto, auto, auto),
+    [*Code*], [*Dec.*], [*Handeling*], [*Geverifieerd in experiment*],
+    [`0x10`], [16], [Inloggen / PLC claimen], [Exp. 1 – login/logout (No. 14)],
+    [`0x11`], [17], [Uitloggen / reservering vrijgeven], [Exp. 1 – login/logout (No. 159)],
+    [`0x40`], [64], [PLC starten], [Exp. 2 – start/stop (No. 26)],
+    [`0x41`], [65], [PLC stoppen], [Exp. 2 – start/stop (No. 135)],
+    [`0x6d`], [109], [Wijziging wegschrijven (SEND 2)], [Exp. 3 – send (No. 33)],
+    [`0x29`], [41], [Wijziging wegschrijven (SEND 1)], [Exp. 3 – send (No. 35)],
+    [`0x36`], [54], [Volledig project downloaden (PC→PLC)], [Exp. 4 – download (No. 42)],
+    [`0x28`], [40], [Programma uploaden (PLC→PC)], [Exp. 5 – upload (No. 59)],
+    [`0x72`], [114], [Vervolg upload (PLC→PC)], [Exp. 5 – upload (No. 192)],
+  ),
+  caption: [Overzicht van de geverifieerde UMAS-functiecodes per experiment.],
 )
 
 
